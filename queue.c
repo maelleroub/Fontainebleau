@@ -37,8 +37,10 @@ void* queue_pop(struct queue *queue)
     queue->size = 0;
     return data;
   }
-  void *data = queue->list->next->data;
+  struct q_list *l = queue->list->next;
   queue->list->next = queue->list->next->next;
+  void *data = l->data;
+  free(l);
   queue->size--;
   return data;
 }
