@@ -60,25 +60,3 @@ void list_print(struct list *list)
     printf("\n");
   }
 }
-
-int main()
-{
-  struct list *a = malloc(sizeof(struct list*));
-  a->data = 2;
-  struct list *b = malloc(sizeof(struct list*));
-  b->data = 7;
-  struct list *c = malloc(sizeof(struct list*));
-  c->data = 4;
-  struct list *d = malloc(sizeof(struct list*));
-  d->data = 3;
-  struct list *e = malloc(sizeof(struct list*));
-  e->data = 1;
-  struct list *sent = malloc(sizeof(struct list*));
-  list_push_front(sent, a);
-  list_push_front(sent, b);
-  list_push_front(sent, c);
-  list_push_front(sent, d);
-  list_push_front(sent, e);
-  list_print(sent);
-  return 1;
-}
