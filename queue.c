@@ -1,5 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
+#include<assert.h>
 #include"queue.h"
 
 void queue_init(struct queue *queue)
@@ -10,7 +11,7 @@ void queue_init(struct queue *queue)
 
 int queue_is_empty(struct queue *queue)
 {
-  return queue->list == NULL;
+  return queue->size == 0;
 }
 
 void queue_push(struct queue *queue, void *elm)
@@ -18,7 +19,10 @@ void queue_push(struct queue *queue, void *elm)
   struct q_list *l = malloc(sizeof(struct q_list*));
   l->data = elm;
   if(queue->list)
-    l->next = queue->list;
+  {
+    l->next = queue->list->next;
+    queue->list->next = l;
+  }
   else
     l->next = l;
   queue->list = l;
@@ -44,3 +48,33 @@ void* queue_pop(struct queue *queue)
   queue->size--;
   return data;
 }
+
+/*int main()
+{
+  int *a = malloc(sizeof(int*));
+  *a = 1;
+  int *b = malloc(sizeof(int*));                             
+  *b = 3;
+  int *c =malloc(sizeof(int*));                             
+  *c = 4;
+  int *d = malloc(sizeof(int*));                             
+  *d = 7;
+  int *e = malloc(sizeof(int*));                             
+  *e = 2;
+  int *f = malloc(sizeof(int*));                             
+  *f = 5;
+  struct queue *q = malloc(sizeof(struct queue*));
+  queue_init(q);
+  queue_push(q, a);
+  queue_push(q,b);
+  queue_push(q,c);
+  assert(queue_pop(q) == a);
+  assert(queue_pop(q) == b);
+  queue_push(q,d);
+  assert(queue_pop(q) == c);
+  assert(queue_pop(q) == d);
+  assert(queue_pop(q) == NULL);
+  queue_push(q,e);
+  assert(queue_pop(q) == e);
+  return 1;
+}*/
