@@ -32,6 +32,42 @@ size_t bt_height(struct binTree *T)
   return (bt_is_empty(T)) ? -1 : 1 + _max(bt_height(T->left), bt_height(T->right));
 }
 
+int bt_is_degenerate(struct binTree *T)
+{
+  if(bt_is_empty(T))
+    return 1;
+  if(T->left && T->right)
+    return 0;
+  return bt_is_degenerate(T->left) && bt_is_degenerate(T->right);
+}
+
+static size_t _left_path_len(struct binTree *T)
+{
+  size_t x;
+  for(x = 0; T; x++)
+    T = T->left;
+  return x;
+}
+
+static int _bt_is_perfect(struct binTree *T, size_t h, size_t lvl)
+{
+  if(bt_is_empty(T->left) ^ bt_is_empty(T->right))
+    return 0;
+  if(T->left)
+    return _bt_is_perfect(T->left, h, lvl + 1) && _bt_is_perfect(T->right, h, lvl + 1);
+  printf("b\n");
+  return h == lvl;
+}
+
+int bt_is_perfect(struct binTree *T)
+{
+  if(bt_is_empty(T))
+    return 1;
+  size_t h = _left_path_len(T);
+  printf("%zu\n", h);
+  return _bt_is_perfect(T, h, 1);
+}
+
 size_t bt_width(struct binTree *T)
 {
   if(!T)
