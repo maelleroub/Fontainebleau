@@ -30,6 +30,39 @@ size_t bt_height(struct binTree *T)
   return (bt_is_empty(T)) ? -1 : 1 + _max(bt_height(T->left), bt_height(T->right));
 }
 
+size_t bt_width(struct binTree *T)
+{
+  if(!T)
+    return 0;
+  int maxw = 0;
+  int w = 0;
+  struct queue *q = malloc(sizeof(struct queue));
+  queue_init(q);
+  queue_push(q, T);
+  queue_push(q, NULL);
+  while(!queue_is_empty(q))
+  {
+    struct binTree *B = queue_pop(q);
+    if(!B)
+    {
+      maxw = _max(w, maxw);
+      w = 0;
+      if(!queue_is_empty(q))
+        queue_push(q, NULL);
+    }
+    else
+    {
+      w++;
+      if(B->left)
+        queue_push(q, B->left);
+      if(B->right)
+        queue_push(q, B->right);
+    }
+  }
+  queue_delete(q);
+  return (size_t) maxw;
+}
+
 int bt_equals(struct binTree *A, struct binTree *B)
 {
   if(bt_is_empty(A) ^ bt_is_empty(B))
