@@ -13,12 +13,14 @@ struct queue
   size_t size;
 };
 
-void* queue_pop(struct queue *queue);
-
-void queue_push(struct queue *queue, void *elm);
+void queue_init(struct queue *queue);
 
 int queue_is_empty(struct queue *queue);
 
-void queue_init(struct queue *queue);
+void queue_push(struct queue *queue, void *elm);
+
+void* queue_pop(struct queue *queue);
+
+void queue_delete(struct queue *queue);
 
 #endif

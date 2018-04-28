@@ -65,8 +65,8 @@ void bt_breadth_first_print(struct binTree *T)
   if (T)
   {
     int nextlevel = 0;
-    void *change = malloc(sizeof(void*));
-    struct queue *q = malloc(sizeof(struct queue*));
+    void *change = malloc(sizeof(void));
+    struct queue *q = malloc(sizeof(struct queue));
     queue_init(q);
     queue_push(q, T);
     queue_push(q, change);
@@ -99,5 +99,7 @@ void bt_breadth_first_print(struct binTree *T)
           }
       }
     }
+    free(change);
+    queue_delete(q);
   }
 }

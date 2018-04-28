@@ -16,7 +16,7 @@ int queue_is_empty(struct queue *queue)
 
 void queue_push(struct queue *queue, void *elm)
 {
-  struct q_list *l = malloc(sizeof(struct q_list*));
+  struct q_list *l = malloc(sizeof(struct q_list));
   l->data = elm;
   if(queue->list)
   {
@@ -47,4 +47,18 @@ void* queue_pop(struct queue *queue)
   free(l);
   queue->size--;
   return data;
+}
+
+void queue_delete(struct queue *queue)
+{
+  struct q_list *l1 = queue->list;
+  struct q_list *l2 = l1;
+  while(queue->size)
+  {
+    l2 = l1->next;
+    free(l1);
+    l1 = l2;
+    queue->size--;
+  }
+  free(queue);
 }
