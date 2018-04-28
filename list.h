@@ -4,7 +4,7 @@
 struct list
 {
   struct list *next;
-  int data;
+  void* data;
 };
 
 int list_is_empty(struct list *list);
@@ -17,6 +17,6 @@ struct list* list_pop_front(struct list *list);
 
 void list_push_back(struct list *list, struct list *elm);
 
-void list_print(struct list *list);
+void list_print_int(struct list *list)
 
 #endif

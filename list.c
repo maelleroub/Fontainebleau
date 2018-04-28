@@ -33,9 +33,7 @@ struct list* list_pop_front(struct list *list)
 {
   struct list *l = list->next;
   if(l)
-  {
     list->next = l->next;
-  }
   return l;
 }
 
@@ -46,15 +44,15 @@ void list_push_back(struct list *list, struct list *elm)
   list->next = elm;
 }
 
-void list_print(struct list *list)
+void list_print_int(struct list *list)
 {
   if(!list_is_empty(list))
   {
     list = list->next;
-    printf("%d", list->data);
+    printf("%d", *((int*) list->data));
     while(list->next)
     {
-      printf(" -> %d", list->next->data);
+      printf(" -> %d", *((int*) list->next->data));
       list = list->next;
     }
     printf("\n");
