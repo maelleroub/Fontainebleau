@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<assert.h>
 #include"queue.h"
+#include"list.h"
 
 struct binTree
 {
@@ -63,6 +64,54 @@ size_t bt_width(struct binTree *T)
   return (size_t) maxw;
 }
 
+struct list* hierarchy(struct binTree *T)
+{
+  struct list *l = malloc(sizeof(struct list));
+  list_init(l);
+  if (T)
+  {
+    int nextlevel = 0;
+    void *change = malloc(sizeof(void));
+    struct queue *q = malloc(sizeof(struct queue));
+    queue_init(q);
+    queue_push(q, T);
+    queue_push(q, change);
+    while(1)
+    {
+      void* v = queue_pop(q);
+      if(v == change)
+      {
+        if(!nextlevel)
+          break;
+        nextlevel = 0;
+        queue_push(q, change);
+      }
+      else
+      {
+        struct binTree *B = v;
+        struct list *l1 = malloc(sizeof(struct list));
+        if(bt_is_empty(B))
+        {
+          l1->data = NULL;
+          queue_push(q, NULL);
+          queue_push(q, NULL);
+        }
+        else
+        {
+          l1->data = &(B->data);
+          queue_push(q, B->left);
+          queue_push(q, B->right);
+          nextlevel = nextlevel || B->left || B->right;
+        }
+        list_push_back(l, l1);
+      }
+    }
+    free(change);
+    queue_delete(q);
+  }
+  return l;
+}
+
 int bt_equals(struct binTree *A, struct binTree *B)
 {
   if(bt_is_empty(A) ^ bt_is_empty(B))
@@ -116,20 +165,20 @@ void bt_breadth_first_print(struct binTree *T)
       }
       else
       {
-          struct binTree *B = v;
-          if(bt_is_empty(B))
-          {
-            printf("X  ");
-            queue_push(q, NULL);
-            queue_push(q, NULL);
-          }
-          else
-          {
-            printf("%d  ", B->data);
-            queue_push(q, B->left);
-            queue_push(q, B->right);
-            nextlevel = nextlevel || B->left || B->right;
-          }
+        struct binTree *B = v;
+        if(bt_is_empty(B))
+        {
+          printf("X  ");
+          queue_push(q, NULL);
+          queue_push(q, NULL);
+        }
+        else
+        {
+          printf("%d  ", B->data);
+          queue_push(q, B->left);
+          queue_push(q, B->right);
+          nextlevel = nextlevel || B->left || B->right;
+        }
       }
     }
     free(change);

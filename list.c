@@ -52,7 +52,10 @@ void list_print_int(struct list *list)
     printf("%d", *((int*) list->data));
     while(list->next)
     {
-      printf(" -> %d", *((int*) list->next->data));
+      if(!list->next->data)
+        printf(" -> None");
+      else
+        printf(" -> %d", *((int*) list->next->data));
       list = list->next;
     }
     printf("\n");

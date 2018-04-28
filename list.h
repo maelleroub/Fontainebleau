@@ -7,6 +7,8 @@ struct list
   void* data;
 };
 
+void list_init(struct list *list);
+
 int list_is_empty(struct list *list);
 
 size_t list_len(struct list *list);
