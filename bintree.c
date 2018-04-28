@@ -55,7 +55,6 @@ static int _bt_is_perfect(struct binTree *T, size_t h, size_t lvl)
     return 0;
   if(T->left)
     return _bt_is_perfect(T->left, h, lvl + 1) && _bt_is_perfect(T->right, h, lvl + 1);
-  printf("b\n");
   return h == lvl;
 }
 
@@ -99,6 +98,32 @@ size_t bt_width(struct binTree *T)
   }
   queue_delete(q);
   return (size_t) maxw;
+}
+
+static int _bt_is_bst(struct binTree *T, int *low, int *high)
+{
+  if(bt_is_empty(T))
+    return 1;
+  if(low == NULL)
+  {
+    if(high != NULL && T->data > *high)
+      return 0;
+    return _bt_is_bst(T->left, low, &T->data) && _bt_is_bst(T->right, &T->data, high);
+  }
+  if(high == NULL)
+  {
+    if(T->data <= *low)
+      return 0;
+    return _bt_is_bst(T->left, low, &T->data) && _bt_is_bst(T->right, &T->data, high);
+  }
+  if(T->data <= *low || T->data > *high)
+    return 0;
+  return _bt_is_bst(T->left, low, &T->data) && _bt_is_bst(T->right, &T->data, high);
+}
+
+int bt_is_bst(struct binTree *T)
+{
+  return _bt_is_bst(T, NULL, NULL);
 }
 
 struct list* bt_to_hierarchy(struct binTree *T)
