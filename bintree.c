@@ -1,5 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
+#include<stdint.h>
 #include<assert.h>
 #include"queue.h"
 #include"list.h"
@@ -21,7 +22,7 @@ size_t bt_size(struct binTree *T)
   return (bt_is_empty(T)) ? 0 : 1 + bt_size(T->left) + bt_size(T->right);
 }
 
-int _max(int a, int b)
+static int _max(int a, int b)
 {
   return (a >= b) ? a : b;
 }
@@ -64,7 +65,7 @@ size_t bt_width(struct binTree *T)
   return (size_t) maxw;
 }
 
-struct list* hierarchy(struct binTree *T)
+struct list* bt_to_hierarchy(struct binTree *T)
 {
   struct list *l = malloc(sizeof(struct list));
   list_init(l);
@@ -112,6 +113,59 @@ struct list* hierarchy(struct binTree *T)
   return l;
 }
 
+struct binTree* hierarchy_to_bt(struct list *list)
+{
+  if(list_is_empty(list))
+    return NULL;
+  struct binTree *root = malloc(sizeof(struct binTree));
+  root->data = *((int*) list_pop_front(list)->data);
+  struct queue *q = malloc(sizeof(struct queue));
+  queue_init(q);
+  queue_push(q, root);
+  while(!list_is_empty(list))
+  {
+    struct binTree *cur = queue_pop(q);
+    struct list *l = list_pop_front(list);
+    if(l && cur)
+    {
+      if(!l->data)
+      {
+        cur->left = NULL;
+        queue_push(q, NULL);
+      }
+      else
+      {
+        struct binTree *btleft = malloc(sizeof(struct binTree));
+        btleft->data = *((int*) l->data);
+        cur->left = btleft;
+        queue_push(q, btleft);
+      }
+    }
+    struct list *r = list_pop_front(list);
+    if(r && cur)
+    {
+      if(!r->data)
+      {
+        cur->right = NULL;
+        queue_push(q, NULL);
+      }
+      else
+      {
+        struct binTree *btright = malloc(sizeof(struct binTree));
+        btright->data = *((int*) r->data);
+        cur->right = btright;
+        queue_push(q, btright);
+      }
+    }
+    if(!cur)
+    {
+      queue_push(q, NULL);
+      queue_push(q, NULL);
+    }
+  }
+  return root;
+}
+
 int bt_equals(struct binTree *A, struct binTree *B)
 {
   if(bt_is_empty(A) ^ bt_is_empty(B))
@@ -123,7 +177,7 @@ int bt_equals(struct binTree *A, struct binTree *B)
   return bt_equals(A->left, B->left) && bt_equals(A->right, B->right);
 }
 
-void _bt_ugly_print(struct binTree *T, int depth)
+static void _bt_ugly_print(struct binTree *T, int depth)
 {
   if(!bt_is_empty(T))
   {
