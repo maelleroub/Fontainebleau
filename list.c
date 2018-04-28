@@ -58,3 +58,14 @@ void list_print_int(struct list *list)
     printf("\n");
   }
 }
+
+void list_delete(struct list *list)
+{
+  struct list *l = list;
+  while(list)
+  {
+    l = list->next;
+    free(list);
+    list = l;
+  }
+}
