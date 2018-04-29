@@ -2,6 +2,14 @@
 #include<stdio.h>
 #include"list.h"
 
+struct list* list_create(void *data)
+{
+  struct list *l = malloc(sizeof(struct list));
+  list_init(l);
+  l->data = data;
+  return(l);
+}
+
 void list_init(struct list *list)
 {
   list->next = NULL;
@@ -71,4 +79,15 @@ void list_delete(struct list *list)
     free(list);
     list = l;
   }
+}
+
+struct list* list_copy(struct list *list)
+{
+  struct list *l = list_create(NULL);
+  while(list->next)
+  {
+    list = list->next;
+    list_push_back(l, list_create(list->data));
+  }
+  return l;
 }
