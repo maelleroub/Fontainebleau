@@ -4,13 +4,16 @@
 #include<assert.h>
 #include"queue.h"
 #include"list.h"
+#include"bintree.h"
 
-struct binTree
+struct binTree* bt_create(int n)
 {
-  int data;
-  struct binTree *left;
-  struct binTree *right;
-};
+  struct binTree *T = malloc(sizeof(struct binTree));
+  T->data = n;
+  T->left = NULL;
+  T->right = NULL;
+  return T;
+}
 
 int bt_is_empty(struct binTree *T)
 {
@@ -63,7 +66,6 @@ int bt_is_perfect(struct binTree *T)
   if(bt_is_empty(T))
     return 1;
   size_t h = _left_path_len(T);
-  printf("%zu\n", h);
   return _bt_is_perfect(T, h, 1);
 }
 
@@ -152,6 +154,7 @@ struct list* bt_to_hierarchy(struct binTree *T)
       {
         struct binTree *B = v;
         struct list *l1 = malloc(sizeof(struct list));
+        list_init(l1);
         if(bt_is_empty(B))
         {
           l1->data = NULL;
@@ -178,8 +181,7 @@ struct binTree* hierarchy_to_bt(struct list *list)
 {
   if(list_is_empty(list))
     return NULL;
-  struct binTree *root = malloc(sizeof(struct binTree));
-  root->data = *((int*) list_pop_front(list)->data);
+  struct binTree *root = bt_create(*((int *) list_pop_front(list)->data));
   struct queue *q = malloc(sizeof(struct queue));
   queue_init(q);
   queue_push(q, root);
@@ -196,8 +198,7 @@ struct binTree* hierarchy_to_bt(struct list *list)
       }
       else
       {
-        struct binTree *btleft = malloc(sizeof(struct binTree));
-        btleft->data = *((int*) l->data);
+        struct binTree *btleft = bt_create(*((int *) l->data));
         cur->left = btleft;
         queue_push(q, btleft);
       }
@@ -212,8 +213,7 @@ struct binTree* hierarchy_to_bt(struct list *list)
       }
       else
       {
-        struct binTree *btright = malloc(sizeof(struct binTree));
-        btright->data = *((int*) r->data);
+        struct binTree *btright = bt_create(*((int *) r->data));
         cur->right = btright;
         queue_push(q, btright);
       }
@@ -298,5 +298,15 @@ void bt_breadth_first_print(struct binTree *T)
     }
     free(change);
     queue_delete(q);
+  }
+}
+
+void bt_delete(struct binTree *T)
+{
+  if(!bt_is_empty(T))
+  {
+    bt_delete(T->left);
+    bt_delete(T->right);
+    free(T);
   }
 }
