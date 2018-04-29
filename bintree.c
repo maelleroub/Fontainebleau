@@ -177,11 +177,14 @@ struct list* bt_to_hierarchy(struct binTree *T)
   return l;
 }
 
-struct binTree* hierarchy_to_bt(struct list *list)
+struct binTree* hierarchy_to_bt(struct list *l)
 {
+  struct list *list = list_copy(l);
   if(list_is_empty(list))
     return NULL;
-  struct binTree *root = bt_create(*((int *) list_pop_front(list)->data));
+  struct list *x = list_pop_front(list);
+  struct binTree *root = bt_create(*((int *) x->data));
+  free(x);
   struct queue *q = malloc(sizeof(struct queue));
   queue_init(q);
   queue_push(q, root);
@@ -218,12 +221,16 @@ struct binTree* hierarchy_to_bt(struct list *list)
         queue_push(q, btright);
       }
     }
+    free(l);
+    free(r);
     if(!cur)
     {
       queue_push(q, NULL);
       queue_push(q, NULL);
     }
   }
+  queue_delete(q);
+  list_delete(list);
   return root;
 }
 

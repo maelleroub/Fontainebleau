@@ -15,8 +15,10 @@ void test(struct binTree *T)
   printf((bt_is_bst(T)) ? "bst\n" : "not bst\n");
   struct list *l = bt_to_hierarchy(T);
   list_print_int(l);
-  assert(bt_equals(T, hierarchy_to_bt(l)));
+  struct binTree *U = hierarchy_to_bt(l);
+  assert(bt_equals(T, U));
   bt_delete(T);
+  bt_delete(U);
   list_delete(l);
 }
   
