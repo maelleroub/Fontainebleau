@@ -5,6 +5,13 @@
 #include<stdlib.h>
 #include<stdio.h>
 
+void deletion_test(struct binTree *T, int x)
+{
+  printf("\n----------------\nDeletion of %d:", x);
+  T = bst_delete_elm(T, x);
+  bt_ugly_print(T);
+}
+
 void bst_test(struct binTree *T)
 {
   printf("\n----------------\n");
@@ -37,6 +44,8 @@ void bst_test(struct binTree *T)
     assert(bst_search(T, 9));
     printf("\n9 present after insertion\n");
   }
+  //T = _bst_delete_max(T);
+  bt_ugly_print(T);
   struct list *l = bt_to_hierarchy(T);
   list_print_int(l);
   struct binTree *U = hierarchy_to_bt(l);
@@ -56,13 +65,22 @@ int main()
   A->left->right = bt_create(3);
   A->right->left = bt_create(5);
   A->right->right = bt_create(7);
-  bst_test(A);
+  printf("\n----------------\n");
+  bt_ugly_print(A);
+  deletion_test(A, 4);
+  deletion_test(A, 0);
+  deletion_test(A, 2);
+  deletion_test(A, 6);
 
   struct binTree *B =  bt_create(4);
   B->right = bt_create(9);
   B->right->left = bt_create(6);
   B->right->left->left = bt_create(5);
-  bst_test(B);
+  printf("\n----------------\n");
+  bt_ugly_print(B);
+  deletion_test(B, 9);
+  deletion_test(B, 5);
+  deletion_test(B, 4);
 
   struct binTree *C = bt_create(10);
   C->left = bt_create(4);
@@ -73,7 +91,13 @@ int main()
   C->left->right = bt_create(8);
   C->left->right->left = bt_create(7);
   C->left->right->right = bt_create(9);
-  bst_test(C);
+  printf("\n----------------\n");
+  bt_ugly_print(C);
+  deletion_test(C, 9);
+  deletion_test(C, 8);
+  deletion_test(C, 10);
+  deletion_test(C, 4);
+  deletion_test(C, 21);
 
   return 1;
 }

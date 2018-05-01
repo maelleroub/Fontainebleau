@@ -46,3 +46,45 @@ struct binTree* bst_insert_leaf(struct binTree *T, int x)
     T->right = bst_insert_leaf(T->right, x);
   return T;
 }
+
+struct binTree* _bst_delete_max(struct binTree *T, int *x)
+{
+  if(bt_is_empty(T))
+    return NULL;
+  if(bt_is_empty(T->right))
+  {
+    struct binTree *N = T->left;
+    *x = T->data;
+    free(T);
+    return N;
+  }
+  T->right = _bst_delete_max(T->right, x);
+  return T;
+}
+
+struct binTree* bst_delete_elm(struct binTree *T, int x)
+{
+  if(bt_is_empty(T))
+    return T;
+  if(x < T->data)
+  {
+    T->left = bst_delete_elm(T->left, x);
+    return T;
+  }
+  if(x > T->data)
+  {
+    T->right = bst_delete_elm(T->right, x);
+    return T;
+  }
+  //Node to delete
+  if(bt_is_empty(T->left))
+  {
+    struct binTree *R = T->right;
+    free(T);
+    return R;
+  }
+  int *d = malloc(sizeof(int));
+  T->left = _bst_delete_max(T->left, d);
+  T->data = *d;
+  return T;
+}
