@@ -5,11 +5,12 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-void deletion_test(struct binTree *T, int x)
+struct binTree* deletion_test(struct binTree *T, int x)
 {
   printf("\n----------------\nDeletion of %d:", x);
   T = bst_delete_elm(T, x);
   bt_ugly_print(T);
+  return T;
 }
 
 void bst_test(struct binTree *T)
@@ -67,10 +68,11 @@ int main()
   A->right->right = bt_create(7);
   printf("\n----------------\n");
   bt_ugly_print(A);
-  deletion_test(A, 4);
-  deletion_test(A, 0);
-  deletion_test(A, 2);
-  deletion_test(A, 6);
+  A = deletion_test(A, 4);
+  A = deletion_test(A, 0);
+  A = deletion_test(A, 2);
+  A = deletion_test(A, 6);
+  bt_delete(A);
 
   struct binTree *B =  bt_create(4);
   B->right = bt_create(9);
@@ -78,9 +80,12 @@ int main()
   B->right->left->left = bt_create(5);
   printf("\n----------------\n");
   bt_ugly_print(B);
-  deletion_test(B, 9);
-  deletion_test(B, 5);
-  deletion_test(B, 4);
+  B = deletion_test(B, 9);
+  B = deletion_test(B, 5);
+  B = deletion_test(B, 4);
+  B = deletion_test(B, 6);
+  B = deletion_test(B, 24);
+  bt_delete(B);
 
   struct binTree *C = bt_create(10);
   C->left = bt_create(4);
@@ -93,11 +98,12 @@ int main()
   C->left->right->right = bt_create(9);
   printf("\n----------------\n");
   bt_ugly_print(C);
-  deletion_test(C, 9);
-  deletion_test(C, 8);
-  deletion_test(C, 10);
-  deletion_test(C, 4);
-  deletion_test(C, 21);
+  C = deletion_test(C, 9);
+  C = deletion_test(C, 8);
+  C = deletion_test(C, 10);
+  C = deletion_test(C, 4);
+  C = deletion_test(C, 21);
+  bt_delete(C);
 
   return 1;
 }
