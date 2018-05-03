@@ -9,7 +9,9 @@
 struct binTree* bt_create(int n)
 {
   struct binTree *T = malloc(sizeof(struct binTree));
-  T->data = n;
+  int *data = malloc(sizeof(int));
+  *data = n;
+  T->data = data;
   T->left = NULL;
   T->right = NULL;
   return T;
@@ -108,19 +110,19 @@ static int _bt_is_bst(struct binTree *T, int *low, int *high)
     return 1;
   if(low == NULL)
   {
-    if(high != NULL && T->data > *high)
+    if(high != NULL && *T->data > *high)
       return 0;
-    return _bt_is_bst(T->left, low, &T->data) && _bt_is_bst(T->right, &T->data, high);
+    return _bt_is_bst(T->left, low, T->data) && _bt_is_bst(T->right, T->data, high);
   }
   if(high == NULL)
   {
-    if(T->data <= *low)
+    if(*T->data <= *low)
       return 0;
-    return _bt_is_bst(T->left, low, &T->data) && _bt_is_bst(T->right, &T->data, high);
+    return _bt_is_bst(T->left, low, T->data) && _bt_is_bst(T->right, T->data, high);
   }
-  if(T->data <= *low || T->data > *high)
+  if(*T->data <= *low || *T->data > *high)
     return 0;
-  return _bt_is_bst(T->left, low, &T->data) && _bt_is_bst(T->right, &T->data, high);
+  return _bt_is_bst(T->left, low, T->data) && _bt_is_bst(T->right, T->data, high);
 }
 
 int bt_is_bst(struct binTree *T)
@@ -163,7 +165,7 @@ struct list* bt_to_hierarchy(struct binTree *T)
         }
         else
         {
-          l1->data = &(B->data);
+          l1->data = B->data;
           queue_push(q, B->left);
           queue_push(q, B->right);
           nextlevel = nextlevel || B->left || B->right;
@@ -240,7 +242,7 @@ int bt_equals(struct binTree *A, struct binTree *B)
     return 0;
   if(bt_is_empty(A) && bt_is_empty(B))
     return 1;
-  if(A->data != B->data)
+  if(*A->data != *B->data)
     return 0;
   return bt_equals(A->left, B->left) && bt_equals(A->right, B->right);
 }
@@ -252,7 +254,7 @@ static void _bt_ugly_print(struct binTree *T, int depth)
     _bt_ugly_print(T->left, depth + 1);
     for(int i = 0; i < depth; i++)
       printf("  ");
-    printf("%d\n", T->data);
+    printf("%d\n", *T->data);
     _bt_ugly_print(T->right, depth + 1);
   }
   else
@@ -296,7 +298,7 @@ void bt_breadth_first_print(struct binTree *T)
         }
         else
         {
-          printf("%d  ", B->data);
+          printf("%d  ", *B->data);
           queue_push(q, B->left);
           queue_push(q, B->right);
           nextlevel = nextlevel || B->left || B->right;
@@ -314,6 +316,7 @@ void bt_delete(struct binTree *T)
   {
     bt_delete(T->left);
     bt_delete(T->right);
+    free(T->data);
     free(T);
   }
 }

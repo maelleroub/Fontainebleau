@@ -5,7 +5,7 @@
 
 struct binTree
 {
-  int data;
+  int *data;
   struct binTree *left;
   struct binTree *right;
 };

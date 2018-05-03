@@ -18,8 +18,8 @@ void bst_test(struct binTree *T)
   printf("\n----------------\n");
   bt_ugly_print(T);
   bt_breadth_first_print(T);
-  printf("max: %d\n", bst_max(T)->data);
-  printf("min: %d\n", bst_min(T)->data);
+  printf("max: %d\n", *bst_max(T)->data);
+  printf("min: %d\n", *bst_min(T)->data);
   printf("size: %zu\nheight: %zu\nwidth: %zu\n", bt_size(T), bt_height(T), bt_width(T));
   printf((bt_is_degenerate(T)) ? "degenerate\n" : "not degenerate\n");
   printf((bt_is_perfect(T)) ? "perfect\n" : "not perfect\n");
