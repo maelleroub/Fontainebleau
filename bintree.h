@@ -10,6 +10,8 @@ struct binTree
   struct binTree *right;
 };
 
+struct binTree* bt_init(int n);
+
 struct binTree* bt_create(int n);
 
 int bt_is_empty(struct binTree *T);

@@ -25,22 +25,25 @@ void test(struct binTree *T)
 
 int main()
 {
-  struct binTree *A = bt_create(1);
+  struct binTree *A_sent = bt_init(1);
+  struct binTree *A = A_sent->left;
   A->left = bt_create(2);
   A->right = bt_create(3);
   A->left->left = bt_create(4);
   A->left->right = bt_create(5);
   A->right->left = bt_create(6);
   A->right->right = bt_create(7);
-  test(A);
+  test(A_sent);
 
-  struct binTree *B =  bt_create(4);
+  struct binTree *B_sent =  bt_init(4);
+  struct binTree *B = B_sent->left;
   B->right = bt_create(9);
   B->right->left = bt_create(6);
   B->right->left->left = bt_create(5);
-  test(B);
+  test(B_sent);
 
-  struct binTree *C = bt_create(10);
+  struct binTree *C_sent = bt_init(10);
+  struct binTree *C = C_sent->left;
   C->left = bt_create(4);
   C->right = bt_create(17);
   C->right->right = bt_create(21);
@@ -49,7 +52,7 @@ int main()
   C->left->right = bt_create(8);
   C->left->right->left = bt_create(7);
   C->left->right->right = bt_create(9);
-  test(C);
+  test(C_sent);
 
   return 1;
 }

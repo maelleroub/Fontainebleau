@@ -6,6 +6,15 @@
 #include"list.h"
 #include"bintree.h"
 
+struct binTree* bt_init(int n)
+{
+  struct binTree *T = malloc(sizeof(struct binTree));
+  T->data = NULL;
+  T->right = NULL;
+  T->left = bt_create(n);
+  return T;
+}
+
 struct binTree* bt_create(int n)
 {
   struct binTree *T = malloc(sizeof(struct binTree));
@@ -19,12 +28,20 @@ struct binTree* bt_create(int n)
 
 int bt_is_empty(struct binTree *T)
 {
-  return T == NULL;
+  return T == NULL || (T->data == NULL && !T->left);
 }
 
 size_t bt_size(struct binTree *T)
 {
-  return (bt_is_empty(T)) ? 0 : 1 + bt_size(T->left) + bt_size(T->right);
+  if(!T)
+    return 0;
+  if(T->data == NULL)
+  {
+    if(!T->left)
+      return 0;
+    T = T->left;
+  }
+  return 1 + bt_size(T->left) + bt_size(T->right);
 }
 
 static int _max(int a, int b)
@@ -34,7 +51,11 @@ static int _max(int a, int b)
 
 size_t bt_height(struct binTree *T)
 {
-  return (bt_is_empty(T)) ? -1 : 1 + _max(bt_height(T->left), bt_height(T->right));
+  if(bt_is_empty(T))
+    return -1;
+  if(T->data == NULL)
+    T = T->left;
+  return 1 + _max(bt_height(T->left), bt_height(T->right));
 }
 
 int bt_is_degenerate(struct binTree *T)
@@ -67,14 +88,16 @@ int bt_is_perfect(struct binTree *T)
 {
   if(bt_is_empty(T))
     return 1;
+  T = T->left;
   size_t h = _left_path_len(T);
   return _bt_is_perfect(T, h, 1);
 }
 
 size_t bt_width(struct binTree *T)
 {
-  if(!T)
+  if(bt_is_empty(T))
     return 0;
+  T = T->left;
   int maxw = 0;
   int w = 0;
   struct queue *q = malloc(sizeof(struct queue));
@@ -106,7 +129,7 @@ size_t bt_width(struct binTree *T)
 
 static int _bt_is_bst(struct binTree *T, int *low, int *high)
 {
-  if(bt_is_empty(T))
+  if(!T)
     return 1;
   if(low == NULL)
   {
@@ -127,6 +150,9 @@ static int _bt_is_bst(struct binTree *T, int *low, int *high)
 
 int bt_is_bst(struct binTree *T)
 {
+  if(bt_is_empty(T))
+    return 1;
+  T = T->left;
   return _bt_is_bst(T, NULL, NULL);
 }
 
@@ -134,8 +160,9 @@ struct list* bt_to_hierarchy(struct binTree *T)
 {
   struct list *l = malloc(sizeof(struct list));
   list_init(l);
-  if (T)
+  if (!bt_is_empty(T))
   {
+    T = T->left;
     int nextlevel = 0;
     void *change = malloc(sizeof(void));
     struct queue *q = malloc(sizeof(struct queue));
@@ -185,11 +212,11 @@ struct binTree* hierarchy_to_bt(struct list *l)
   if(list_is_empty(list))
     return NULL;
   struct list *x = list_pop_front(list);
-  struct binTree *root = bt_create(*((int *) x->data));
+  struct binTree *root = bt_init(*((int *) x->data));
   free(x);
   struct queue *q = malloc(sizeof(struct queue));
   queue_init(q);
-  queue_push(q, root);
+  queue_push(q, root->left);
   while(!list_is_empty(list))
   {
     struct binTree *cur = queue_pop(q);
@@ -242,6 +269,8 @@ int bt_equals(struct binTree *A, struct binTree *B)
     return 0;
   if(bt_is_empty(A) && bt_is_empty(B))
     return 1;
+  if(A->data == NULL)
+    return bt_equals(A->left, B->left);
   if(*A->data != *B->data)
     return 0;
   return bt_equals(A->left, B->left) && bt_equals(A->right, B->right);
@@ -263,13 +292,16 @@ static void _bt_ugly_print(struct binTree *T, int depth)
 
 void bt_ugly_print(struct binTree *T)
 {
-  _bt_ugly_print(T, 0);
+  if(bt_is_empty(T))
+    return;
+  _bt_ugly_print(T->left, 0);
 }
 
 void bt_breadth_first_print(struct binTree *T)
 {
-  if (T)
+  if(!bt_is_empty(T))
   {
+    T = T->left;
     int nextlevel = 0;
     void *change = malloc(sizeof(void));
     struct queue *q = malloc(sizeof(struct queue));
