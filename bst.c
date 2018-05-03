@@ -11,6 +11,7 @@ struct binTree* bst_max(struct binTree *T)
 {
   if(bt_is_empty(T))
     return NULL;
+  T = T->left;
   while(T->right)
     T = T->right;
   return T;
@@ -20,6 +21,7 @@ struct binTree* bst_min(struct binTree *T)
 {
   if(bt_is_empty(T))
     return NULL;
+  T = T->left;
   while(T->left)
     T = T->left;
   return T;
@@ -29,6 +31,8 @@ struct binTree* bst_search(struct binTree *T, int x)
 {
   if(bt_is_empty(T))
     return T;
+  if(T->data == NULL)
+    return bst_search(T->left, x);
   if(x == *T->data)
     return T;
   if(x < *T->data)
@@ -36,15 +40,20 @@ struct binTree* bst_search(struct binTree *T, int x)
   return bst_search(T->right, x);
 }
 
-struct binTree* bst_insert_leaf(struct binTree *T, int x)
+static struct binTree* _bst_insert_leaf(struct binTree* T, int x)
 {
-  if(bt_is_empty(T))
+  if(!T)
     return bt_create(x);
   if(x <= *T->data)
-    T->left = bst_insert_leaf(T->left, x);
+    T->left = _bst_insert_leaf(T->left, x);
   else
-    T->right = bst_insert_leaf(T->right, x);
+    T->right = _bst_insert_leaf(T->right, x);
   return T;
+}
+
+void bst_insert_leaf(struct binTree *T, int x)
+{
+  T->left = _bst_insert_leaf(T->left, x);
 }
 
 static struct binTree* _bst_delete_max(struct binTree *T, int *x)

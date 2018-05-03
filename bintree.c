@@ -28,7 +28,7 @@ struct binTree* bt_create(int n)
 
 int bt_is_empty(struct binTree *T)
 {
-  return T == NULL || (T->data == NULL && !T->left);
+  return !T || (T->data == NULL && !T->left);
 }
 
 size_t bt_size(struct binTree *T)
