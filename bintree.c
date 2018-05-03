@@ -344,7 +344,7 @@ void bt_breadth_first_print(struct binTree *T)
 
 void bt_delete(struct binTree *T)
 {
-  if(!bt_is_empty(T))
+  if(T)
   {
     bt_delete(T->left);
     bt_delete(T->right);

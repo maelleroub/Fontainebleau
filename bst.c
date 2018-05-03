@@ -63,7 +63,8 @@ static struct binTree* _bst_delete_max(struct binTree *T, int *x)
   if(bt_is_empty(T->right))
   {
     struct binTree *N = T->left;
-    *x = *T->data;
+    *x = *(T->data);
+    free(T->data);
     free(T);
     return N;
   }
@@ -78,7 +79,8 @@ static struct binTree* _bst_delete_min(struct binTree *T, int *x)
   if(bt_is_empty(T->left))
   {
     struct binTree *N = T->right;
-    *x = *T->data;
+    *x = *(T->data);
+    free(T->data);
     free(T);
     return N;
   }
@@ -86,18 +88,18 @@ static struct binTree* _bst_delete_min(struct binTree *T, int *x)
   return T;
 }
 
-struct binTree* bst_delete_elm(struct binTree *T, int x)
+static struct binTree* _bst_delete_elm(struct binTree *T, int x)
 {
-  if(bt_is_empty(T))
+  if(!T)
     return T;
   if(x < *T->data)
   {
-    T->left = bst_delete_elm(T->left, x);
+    T->left = _bst_delete_elm(T->left, x);
     return T;
   }
   if(x > *T->data)
   {
-    T->right = bst_delete_elm(T->right, x);
+    T->right = _bst_delete_elm(T->right, x);
     return T;
   }
   //Node to delete
@@ -105,6 +107,8 @@ struct binTree* bst_delete_elm(struct binTree *T, int x)
   {
     if(bt_is_empty(T->right))
     {
+      free(T->data);
+      free(T);
       return NULL;
     }
     int *d = malloc(sizeof(int));
@@ -118,4 +122,9 @@ struct binTree* bst_delete_elm(struct binTree *T, int x)
   *T->data = *d;
   free(d);
   return T;
+}
+
+void bst_delete_elm(struct binTree *T, int x)
+{
+  T->left = _bst_delete_elm(T->left, x);
 }
