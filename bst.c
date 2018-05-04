@@ -128,3 +128,64 @@ void bst_delete_elm(struct binTree *T, int x)
 {
   T->left = _bst_delete_elm(T->left, x);
 }
+
+static struct binTree* _rotation_left(struct binTree *T)
+{
+  struct binTree *R = T->right;
+  T->right = R->left;
+  R->left = T;
+  return R;
+}
+
+static struct binTree* _rotation_right(struct binTree *T)
+{
+  struct binTree *L = T->left;
+  T->left = L->right;
+  L->right = T;
+  return L;
+}
+
+static struct binTree* _bst_insert_root(struct binTree *T, int x, int *l)
+{
+  if(!T)
+  {
+    *l = 0;
+    return bt_create(x);
+  }
+  if(x <= *T->data)
+  {
+    T->left = _bst_insert_root(T->left, x, l);
+    if(*l == 1)
+      T->left = _rotation_right(T->left);
+    if(*l == -1)
+      T->left = _rotation_left(T->left);
+    *l = 1;
+  }
+  else
+  {
+    T->right = _bst_insert_root(T->right, x, l);
+    if(*l == 1)
+      T->right = _rotation_right(T->right);
+    if(*l == -1)
+      T->right = _rotation_left(T->right);
+    *l = -1;
+  }
+  return T;
+}
+
+
+void bst_insert_root(struct binTree *T, int x)
+{
+  if(T->left == NULL)
+    T->left = bt_create(x);
+  else
+  {
+    int *l = malloc(sizeof(int));
+    T->left = _bst_insert_root(T->left, x, l);
+    if(*l == 1)
+      T->left = _rotation_right(T->left);
+    if(*l == -1)
+      T->left = _rotation_left(T->left);
+    free(l);
+  }
+}

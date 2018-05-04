@@ -11,3 +11,5 @@ struct binTree* bst_search(struct binTree *T, int x);
 void bst_insert_leaf(struct binTree *T, int x);
 
 void bst_delete_elm(struct binTree *T, int x);
+
+void bst_insert_root(struct binTree *T, int x);
