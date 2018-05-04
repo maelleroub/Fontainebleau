@@ -93,33 +93,6 @@ int bt_is_perfect(struct binTree *T)
   return _bt_is_perfect(T, h, 1);
 }
 
-static int _bt_is_balanced(struct binTree *T, int *h)
-{
-  if(!T)
-  {
-    *h = -1;
-    return 1;
-  }
-  int bl = _bt_is_balanced(T->left, h);
-  int hl = *h;
-  int br = _bt_is_balanced(T->right, h);
-  int hr = *h;
-  if(!(bl && br))
-    return 0;
-  if(hl - hr > 1 || hr - hl > 1)
-    return 0;
-  *h = 1 + _max(hl, hr);
-  return 1;
-}
-
-int bt_is_balanced(struct binTree *T)
-{
-  int *h = malloc(sizeof(int));
-  int b = _bt_is_balanced(T->left, h);
-  free(h);
-  return b;
-}
-
 size_t bt_width(struct binTree *T)
 {
   if(bt_is_empty(T))
@@ -160,17 +133,17 @@ static int _bt_is_bst(struct binTree *T, int *low, int *high)
     return 1;
   if(low == NULL)
   {
-    if(high != NULL && *T->data > *high)
+    if(high != NULL && *T->data >= *high)
       return 0;
     return _bt_is_bst(T->left, low, T->data) && _bt_is_bst(T->right, T->data, high);
   }
   if(high == NULL)
   {
-    if(*T->data <= *low)
+    if(*T->data < *low)
       return 0;
     return _bt_is_bst(T->left, low, T->data) && _bt_is_bst(T->right, T->data, high);
   }
-  if(*T->data <= *low || *T->data > *high)
+  if(*T->data < *low || *T->data >= *high)
     return 0;
   return _bt_is_bst(T->left, low, T->data) && _bt_is_bst(T->right, T->data, high);
 }
@@ -179,8 +152,81 @@ int bt_is_bst(struct binTree *T)
 {
   if(bt_is_empty(T))
     return 1;
-  T = T->left;
-  return _bt_is_bst(T, NULL, NULL);
+  return _bt_is_bst(T->left, NULL, NULL);
+}
+
+static int _bt_is_balanced(struct binTree *T, int *h)
+{
+  if(!T)
+  {
+    *h = -1;
+    return 1;
+  }
+  int bl = _bt_is_balanced(T->left, h);
+  int hl = *h;
+  int br = _bt_is_balanced(T->right, h);
+  int hr = *h;
+  if(!(bl && br))
+    return 0;
+  if(hl - hr > 1 || hr - hl > 1)
+    return 0;
+  *h = 1 + _max(hl, hr);
+  return 1;
+}
+
+int bt_is_balanced(struct binTree *T)
+{
+  int *h = malloc(sizeof(int));
+  int b = _bt_is_balanced(T->left, h);
+  free(h);
+  return b;
+}
+
+static int _bt_is_avl(struct binTree *T, int *low, int *high, int *h)
+{
+  if(!T)
+  {
+    *h = -1;
+    return 1;
+  }
+  if(low == NULL)
+  {
+    if(high != NULL && *T->data >= *high)
+      return 0;
+  }
+  else
+  {
+    if(high == NULL)
+    {
+      if(*T->data < *low)
+        return 0;
+    }
+    else
+    {
+      if(*T->data < *low || *T->data >= *high)
+        return 0;
+    }
+  }
+  int bl = _bt_is_avl(T->left, low, T->data, h);
+  int hl = *h;
+  int br = _bt_is_avl(T->right, T->data, high, h);
+  int hr = *h;
+  if(!(bl && br))
+    return 0;
+  if(hl - hr > 1 || hr - hl > 1)
+    return 0;
+  *h = 1 + _max(hl, hr);
+  return 1;
+}
+
+int bt_is_avl(struct binTree *T)
+{
+  if(bt_is_empty(T))
+    return 1;
+  int *h = malloc(sizeof(int));
+  int b = _bt_is_avl(T->left, NULL, NULL, h);
+  free(h);
+  return b;
 }
 
 struct list* bt_to_hierarchy(struct binTree *T)
