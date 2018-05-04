@@ -24,6 +24,8 @@ int bt_is_degenerate(struct binTree *T);
 
 int bt_is_perfect(struct binTree *T);
 
+int bt_is_balanced(struct binTree *T);
+
 size_t bt_width(struct binTree *T);
 
 int bt_is_bst(struct binTree *T);

@@ -93,6 +93,33 @@ int bt_is_perfect(struct binTree *T)
   return _bt_is_perfect(T, h, 1);
 }
 
+static int _bt_is_balanced(struct binTree *T, int *h)
+{
+  if(!T)
+  {
+    *h = -1;
+    return 1;
+  }
+  int bl = _bt_is_balanced(T->left, h);
+  int hl = *h;
+  int br = _bt_is_balanced(T->right, h);
+  int hr = *h;
+  if(!(bl && br))
+    return 0;
+  if(hl - hr > 1 || hr - hl > 1)
+    return 0;
+  *h = 1 + _max(hl, hr);
+  return 1;
+}
+
+int bt_is_balanced(struct binTree *T)
+{
+  int *h = malloc(sizeof(int));
+  int b = _bt_is_balanced(T->left, h);
+  free(h);
+  return b;
+}
+
 size_t bt_width(struct binTree *T)
 {
   if(bt_is_empty(T))
