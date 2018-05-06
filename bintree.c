@@ -4,6 +4,7 @@
 #include<assert.h>
 #include"queue.h"
 #include"list.h"
+#include"avl.h"
 #include"bintree.h"
 
 struct binTree* bt_init(int n)
@@ -424,4 +425,42 @@ void bt_delete(struct binTree *T)
     free(T->data);
     free(T);
   }
+}
+
+static struct AVL* _bt_to_avl(struct binTree *T, int *h)
+{
+  if(!T)
+  {
+    *h = -1;
+    return NULL;
+  }
+  struct AVL *A = avl_create(*T->data);
+  A->left = _bt_to_avl(T->left, h);
+  int hl = *h;
+  A->right = _bt_to_avl(T->right, h);
+  int hr = *h;
+  A->balance = hl - hr;
+  *h = 1 + _max(hl, hr);
+  return A;
+}
+
+struct AVL* bt_to_avl(struct binTree *T)
+{
+  if(bt_is_empty(T))
+  {
+    struct AVL *A = malloc(sizeof(struct AVL));
+    A->data = NULL;
+    A->left = NULL;
+    A->right = NULL;
+    A->balance = 0;
+    return A;
+  }
+  struct AVL *A = avl_init(*T->left->data);
+  int *h = malloc(sizeof(int));
+  A->left->left = _bt_to_avl(T->left->left, h);
+  int hl = *h;
+  A->left->right = _bt_to_avl(T->left->right, h);
+  int hr = *h;
+  A->left->balance = hl - hr;
+  return A;
 }

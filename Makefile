@@ -10,6 +10,8 @@ testbintree: ${OBJ}
 
 testbst: ${OBJ} bst.c
 
+testavl: ${OBJ} avl.c
+
 -include ${DEP}
 
 clean:

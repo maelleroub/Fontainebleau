@@ -2,6 +2,7 @@
 #define BIN_TREE_H_
 
 #include<stdlib.h>
+#include"avl.h"
 
 struct binTree
 {
@@ -43,5 +44,7 @@ void bt_ugly_print(struct binTree *T);
 void bt_breadth_first_print(struct binTree *T);
 
 void bt_delete(struct binTree *T);
+
+struct AVL* bt_to_avl(struct binTree *T);
 
 #endif
