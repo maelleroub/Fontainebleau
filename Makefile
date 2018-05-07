@@ -15,4 +15,4 @@ testavl: ${OBJ} avl.c
 -include ${DEP}
 
 clean:
-	rm -f *.o *.d testbintree testbst
+	rm -f *.o *.d testbintree testbst testavl
