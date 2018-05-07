@@ -3,6 +3,27 @@
 #include"bintree.h"
 #include"avl.h"
 
+static void _balance(struct AVL *A, int depth)
+{
+  if(!avl_is_empty(A))
+  {
+    _balance(A->left, depth + 1);
+    for(int i = 0; i < depth; i++)
+      printf("  ");
+    printf("%d\n", A->balance);
+    _balance(A->right, depth + 1);
+  }
+  else
+    printf("\n");
+}
+
+void balance(struct AVL *A)
+{
+  if(avl_is_empty(A))
+    return;
+  _balance(A->left, 0);
+}
+
 void test_insertion(struct AVL *A, int x)
 {
   printf("\n----------------\n");
@@ -33,15 +54,27 @@ void avl_test(struct AVL *A)
 
 int main()
 {
-  struct AVL *A = avl_init(5);
+  struct AVL *A = avl_init(25);
   avl_ugly_print(A);
-  test_insertion(A, 7);
+  test_insertion(A, 103);
   test_insertion(A, 4);
-  test_insertion(A, 3);
-  test_insertion(A, 9);
-  test_insertion(A, 2);
+  test_insertion(A, 37);
   test_insertion(A, 1);
-  test_insertion(A, 0);
-  test_insertion(A, 12);
+  test_insertion(A, 21);
+  test_insertion(A, 22);
+  test_insertion(A, 44);
+  test_insertion(A, 78);
+  test_insertion(A, 11);
+  test_insertion(A, 31);
+  test_insertion(A, 42);
+  test_insertion(A, 7);
+  test_insertion(A, 90);
   test_insertion(A, 10);
+  test_insertion(A, 55);
+  test_insertion(A, 62);
+  test_insertion(A, 77);
+  test_insertion(A, 18);
+  printf("\n----------------\n");
+  balance(A);
+  avl_delete(A);
 }

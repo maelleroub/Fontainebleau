@@ -223,7 +223,7 @@ static struct AVL* _avl_insert(struct AVL *A, int x, int *change)
         *change = 0;
         A = _rotation_right(A);
         A->balance = 0;
-        A->left->balance = 0;
+        A->right->balance = 0;
         return A;
       }
       *change = 0;
@@ -234,7 +234,12 @@ static struct AVL* _avl_insert(struct AVL *A, int x, int *change)
         A->left->balance = 0;
         A->right->balance = -1;
       }
-      else
+      if(A->balance == 0)
+      {
+        A->left->balance = 0;
+        A->right->balance = 0;
+      }
+      if(A->balance == -1)
       {
         A->left->balance = 1;
         A->right->balance = 0;
@@ -256,7 +261,7 @@ static struct AVL* _avl_insert(struct AVL *A, int x, int *change)
       *change = 0;
       A = _rotation_left(A);
       A->balance = 0;
-      A->right->balance = 0;
+      A->left->balance = 0;
       return A;
     }
     *change = 0;
@@ -267,7 +272,12 @@ static struct AVL* _avl_insert(struct AVL *A, int x, int *change)
       A->left->balance = 0;
       A->right->balance = -1;
     }
-    else
+    if(A->balance == 0)
+    {
+      A->left->balance = 0;
+      A->right->balance = 0;
+    }
+    if(A->balance == -1)
     {
       A->left->balance = 1;
       A->right->balance = 0;
