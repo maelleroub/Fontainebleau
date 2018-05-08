@@ -2,15 +2,15 @@ CPPFLAGS = -MMD
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -O2
 
-SRC = list.c queue.c bintree.c
+SRC = list.c queue.c bintree.c bst.c avl.c
 OBJ = ${SRC:.c=.o}
 DEP = ${SRC:.c=.d}
 
 testbintree: ${OBJ}
 
-testbst: ${OBJ} bst.c
+testbst: ${OBJ}
 
-testavl: ${OBJ} avl.c
+testavl: ${OBJ}
 
 -include ${DEP}
 
