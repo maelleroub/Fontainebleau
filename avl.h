@@ -36,6 +36,8 @@ void avl_ugly_print(struct AVL *A);
 
 void avl_insert(struct AVL *A, int x);
 
+void avl_delete_elm(struct AVL *A, int x);
+
 void avl_delete(struct AVL *A);
 
 #endif

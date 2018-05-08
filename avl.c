@@ -204,54 +204,49 @@ static struct AVL* _rotation_right(struct AVL *A)
   return L;
 }
 
-static struct AVL* _avl_insert(struct AVL *A, int x, int *change)
+static struct AVL* _balance_to_right(struct AVL *A, int *change)
 {
-  if(!A)
+  if(*change)
+    A->balance = A->balance + 1;
+  if(A->balance == 2)
   {
-    *change = 1;
-    return avl_create(x);
-  }
-  if(x <= *A->data)
-  {
-    A->left = _avl_insert(A->left, x, change);
-    if(*change)
-      A->balance = A->balance + 1;
-    if(A->balance == 2)
+    if(A->left->balance >= 0)
     {
-      if(A->left->balance >= 0)
-      {
-        *change = 0;
-        A = _rotation_right(A);
-        A->balance = 0;
-        A->right->balance = 0;
-        return A;
-      }
       *change = 0;
-      A->left = _rotation_left(A->left);
       A = _rotation_right(A);
-      if(A->balance == 1)
-      {
-        A->left->balance = 0;
-        A->right->balance = -1;
-      }
-      if(A->balance == 0)
-      {
-        A->left->balance = 0;
-        A->right->balance = 0;
-      }
-      if(A->balance == -1)
-      {
-        A->left->balance = 1;
-        A->right->balance = 0;
-      }
       A->balance = 0;
+      A->right->balance = 0;
       return A;
     }
-    if(!(*change && A->balance == 1))
-      *change = 0;
+    *change = 0;
+    A->left = _rotation_left(A->left);
+    A = _rotation_right(A);
+    if(A->balance == 1)
+    {
+      A->left->balance = 0;
+      A->right->balance = -1;
+    }
+    if(A->balance == 0)
+    {
+      A->left->balance = 0;
+      A->right->balance = 0;
+    }
+    if(A->balance == -1)
+    {
+      A->left->balance = 1;
+      A->right->balance = 0;
+    }
+    A->balance = 0;
     return A;
   }
-  A->right = _avl_insert(A->right, x, change);
+  if(!(*change && A->balance == 1))
+    *change = 0;
+  return A;
+
+}
+
+static struct AVL* _balance_to_left(struct AVL *A, int *change)
+{
   if(*change)
     A->balance = A->balance - 1;
   if(A->balance == -2)
@@ -290,10 +285,104 @@ static struct AVL* _avl_insert(struct AVL *A, int x, int *change)
   return A;
 }
 
+static struct AVL* _avl_insert(struct AVL *A, int x, int *change)
+{
+  if(!A)
+  {
+    *change = 1;
+    return avl_create(x);
+  }
+  if(x <= *A->data)
+  {
+    A->left = _avl_insert(A->left, x, change);
+    return _balance_to_right(A, change);
+  }
+  A->right = _avl_insert(A->right, x, change);
+  return _balance_to_left(A, change);
+}
+
 void avl_insert(struct AVL *A, int x)
 {
   int *change = malloc(sizeof(int));
   A->left = _avl_insert(A->left, x, change);
+  free(change);
+}
+
+static struct AVL* _avl_delete_max(struct AVL *A, int *x, int *change)
+{
+  if(avl_is_empty(A))
+    return NULL;
+  if(avl_is_empty(A->right))
+  {
+    struct AVL *N = A->left;
+    *x = *(A->data);
+    free(A->data);
+    free(A);
+    *change = 1;
+    return N;
+  }
+  A->right = _avl_delete_max(A->right, x, change);
+  return _balance_to_right(A, change);
+}
+
+static struct AVL* _avl_delete_min(struct AVL *A, int *x, int *change)
+{
+  if(avl_is_empty(A))
+    return NULL;
+  if(avl_is_empty(A->left))
+  {
+    struct AVL *N = A->right;
+    *x = *(A->data);
+    free(A->data);
+    free(A);
+    *change = 1;
+    return N;
+  }
+  A->left = _avl_delete_min(A->left, x, change);
+  return _balance_to_left(A, change);
+}
+
+static struct AVL* _avl_delete_elm(struct AVL *A, int x, int *change)
+{
+  if(!A)
+    return A;
+  if(x < *A->data)
+  {
+    A->left = _avl_delete_elm(A->left, x, change);
+    return _balance_to_left(A, change);
+  }
+  if(x > *A->data)
+  {
+    A->right = _avl_delete_elm(A->right, x, change);
+    return _balance_to_right(A, change);
+  }
+  //Node to delete
+  if(avl_is_empty(A->left))
+  {
+    if(avl_is_empty(A->right))
+    {
+      free(A->data);
+      free(A);
+      *change = 1;
+      return NULL;
+    }
+    int *d = malloc(sizeof(int));
+    A->right = _avl_delete_min(A->right, d, change);
+    *A->data = *d;
+    free(d);
+    return _balance_to_right(A, change);
+  }
+  int *d = malloc(sizeof(int));
+  A->left = _avl_delete_max(A->left, d, change);
+  *A->data = *d;
+  free(d);
+  return _balance_to_left(A, change);
+}
+
+void avl_delete_elm(struct AVL *A, int x)
+{
+  int *change = malloc(sizeof(int)); 
+  A->left = _avl_delete_elm(A->left, x, change);
   free(change);
 }
 

@@ -24,6 +24,14 @@ void balance(struct AVL *A)
   _balance(A->left, 0);
 }
 
+void test_deletion(struct AVL *A, int x)
+{
+  printf("\n----------------\n");
+  printf("Deletion of %d:\n", x);
+  avl_delete_elm(A, x);
+  avl_ugly_print(A);
+}
+
 void test_insertion(struct AVL *A, int x)
 {
   printf("\n----------------\n");
@@ -54,27 +62,24 @@ void avl_test(struct AVL *A)
 
 int main()
 {
-  struct AVL *A = avl_init(25);
+  struct AVL *A = avl_init(4);
   avl_ugly_print(A);
-  test_insertion(A, 103);
-  test_insertion(A, 4);
-  test_insertion(A, 37);
-  test_insertion(A, 1);
-  test_insertion(A, 21);
-  test_insertion(A, 22);
-  test_insertion(A, 44);
-  test_insertion(A, 78);
   test_insertion(A, 11);
-  test_insertion(A, 31);
-  test_insertion(A, 42);
-  test_insertion(A, 7);
-  test_insertion(A, 90);
+  test_deletion(A, 11);
+  test_insertion(A, 13);
+  test_insertion(A, 2);
+  test_insertion(A, 5);
+  test_insertion(A, 1);
+  test_insertion(A, 8);
+  test_deletion(A, 5);
+  test_deletion(A, 13);
+  test_insertion(A, 20);
   test_insertion(A, 10);
-  test_insertion(A, 55);
-  test_insertion(A, 62);
-  test_insertion(A, 77);
-  test_insertion(A, 18);
-  printf("\n----------------\n");
+  test_insertion(A, 9);
+  test_insertion(A, 40);
+  test_deletion(A, 9);
+  test_deletion(A, 4);
+  test_deletion(A, 2);
   balance(A);
   avl_delete(A);
 }
