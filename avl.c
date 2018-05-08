@@ -188,6 +188,105 @@ void avl_breadth_first_print(struct AVL *A)
   }
 }
 
+static struct AVL* _rotation_left(struct AVL *A)
+{
+  struct AVL *R = A->right;
+  A->right = R->left;
+  R->left = A;
+  return R;
+}
+
+static struct AVL* _rotation_right(struct AVL *A)
+{
+  struct AVL *L = A->left;
+  A->left = L->right;
+  L->right = A;
+  return L;
+}
+
+static struct AVL* _avl_insert(struct AVL *A, int x, int *change)
+{
+  if(!A)
+  {
+    *change = 1;
+    return avl_create(x);
+  }
+  if(x <= *A->data)
+  {
+    A->left = _avl_insert(A->left, x, change);
+    if(*change)
+      A->balance = A->balance + 1;
+    if(A->balance == 2)
+    {
+      if(A->left->balance >= 0)
+      {
+        *change = 0;
+        A = _rotation_right(A);
+        A->balance = 0;
+        A->left->balance = 0;
+        return A;
+      }
+      *change = 0;
+      A->left = _rotation_left(A->left);
+      A = _rotation_right(A);
+      if(A->balance == 1)
+      {
+        A->left->balance = 0;
+        A->right->balance = -1;
+      }
+      else
+      {
+        A->left->balance = 1;
+        A->right->balance = 0;
+      }
+      A->balance = 0;
+      return A;
+    }
+    if(!(*change && A->balance == 1))
+      *change = 0;
+    return A;
+  }
+  A->right = _avl_insert(A->right, x, change);
+  if(*change)
+    A->balance = A->balance - 1;
+  if(A->balance == -2)
+  {
+    if(A->right->balance <= 0)
+    {
+      *change = 0;
+      A = _rotation_left(A);
+      A->balance = 0;
+      A->right->balance = 0;
+      return A;
+    }
+    *change = 0;
+    A->right = _rotation_right(A->right);
+    A = _rotation_left(A);
+    if(A->balance == 1)
+    {
+      A->left->balance = 0;
+      A->right->balance = -1;
+    }
+    else
+    {
+      A->left->balance = 1;
+      A->right->balance = 0;
+    }
+    A->balance = 0;
+    return A;
+  }
+  if(!(*change && A->balance == -1))
+    *change = 0;
+  return A;
+}
+
+void avl_insert(struct AVL *A, int x)
+{
+  int *change = malloc(sizeof(int));
+  A->left = _avl_insert(A->left, x, change);
+  free(change);
+}
+
 void avl_delete(struct AVL *A)
 {
   if(A)

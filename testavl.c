@@ -3,6 +3,14 @@
 #include"bintree.h"
 #include"avl.h"
 
+void test_insertion(struct AVL *A, int x)
+{
+  printf("\n----------------\n");
+  printf("Insertion of %d:\n", x);
+  avl_insert(A, x);
+  avl_ugly_print(A);
+}
+
 void avl_test(struct AVL *A)
 {
   printf("\n----------------\n");
@@ -25,19 +33,15 @@ void avl_test(struct AVL *A)
 
 int main()
 {
-  struct binTree *A_sent = bt_init(13);
-  struct binTree *A = A_sent->left;
-  A->left = bt_create(5);
-  A->right = bt_create(25);
-  A->left->left = bt_create(1);
-  A->left->right = bt_create(7);
-  A->right->left = bt_create(17);
-  A->right->right = bt_create(43);
-  A->left->right->left = bt_create(6);
-  bt_ugly_print(A_sent);
-  struct AVL *B = bt_to_avl(A_sent);
-  avl_test(B);
-  bt_delete(A_sent);
-  avl_delete(B);
-  return 1;
+  struct AVL *A = avl_init(5);
+  avl_ugly_print(A);
+  test_insertion(A, 7);
+  test_insertion(A, 4);
+  test_insertion(A, 3);
+  test_insertion(A, 9);
+  test_insertion(A, 2);
+  test_insertion(A, 1);
+  test_insertion(A, 0);
+  test_insertion(A, 12);
+  test_insertion(A, 10);
 }
