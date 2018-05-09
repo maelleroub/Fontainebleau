@@ -12,7 +12,7 @@ struct list
 
 struct list* list_create(void *data);
 
-void list_init(struct list *list);
+struct list* list_init(void *data);
 
 int list_is_empty(struct list *list);
 

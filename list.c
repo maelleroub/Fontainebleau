@@ -3,14 +3,17 @@
 struct list* list_create(void *data)
 {
   struct list *l = malloc(sizeof(struct list));
-  list_init(l);
+  l->next = NULL;
   l->data = data;
-  return(l);
+  return l;
 }
 
-void list_init(struct list *list)
+struct list* list_init(void *data)
 {
-  list->next = NULL;
+  struct list *l = malloc(sizeof(struct list));
+  l->data = NULL;
+  l->next = list_create(data);
+  return l;
 }
 
 int list_is_empty(struct list *list)

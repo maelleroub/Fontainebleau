@@ -17,40 +17,40 @@ struct binTree
   struct binTree *right;
 };
 
-struct binTree* bt_init(int n);
+struct binTree* bint_init(int n);
 
-struct binTree* bt_create(int n);
+struct binTree* bint_create(int n);
 
-int bt_is_empty(struct binTree *T);
+int bint_is_empty(struct binTree *T);
 
-size_t bt_size(struct binTree *T);
+size_t bint_size(struct binTree *T);
 
-size_t bt_height(struct binTree *T);
+size_t bint_height(struct binTree *T);
 
-int bt_is_degenerate(struct binTree *T);
+int bint_is_degenerate(struct binTree *T);
 
-int bt_is_perfect(struct binTree *T);
+int bint_is_perfect(struct binTree *T);
 
-size_t bt_width(struct binTree *T);
+size_t bint_width(struct binTree *T);
 
-int bt_is_bst(struct binTree *T);
+int bint_is_bst(struct binTree *T);
 
-int bt_is_balanced(struct binTree *T);
+int bint_is_balanced(struct binTree *T);
 
-int bt_is_avl(struct binTree *T);
+int bint_is_avl(struct binTree *T);
 
-struct list* bt_to_hierarchy(struct binTree *T);
+struct list* bint_to_hierarchy(struct binTree *T);
 
-struct binTree* hierarchy_to_bt(struct list *list);
+struct binTree* hierarchy_to_bint(struct list *list);
 
-int bt_equals(struct binTree *A, struct binTree *B);
+int bint_equals(struct binTree *A, struct binTree *B);
 
-void bt_ugly_print(struct binTree *T);
+void bint_ugly_print(struct binTree *T);
 
-void bt_breadth_first_print(struct binTree *T);
+void bint_breadth_first_print(struct binTree *T);
 
-void bt_delete(struct binTree *T);
+void bint_delete(struct binTree *T);
 
-struct AVL* bt_to_avl(struct binTree *T);
+struct AVL* bint_to_avl(struct binTree *T);
 
 #endif
