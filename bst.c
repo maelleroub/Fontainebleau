@@ -2,7 +2,7 @@
 
 struct binTree* bst_max(struct binTree *T)
 {
-  if(bt_is_empty(T))
+  if(bint_is_empty(T))
     return NULL;
   T = T->left;
   while(T->right)
@@ -12,7 +12,7 @@ struct binTree* bst_max(struct binTree *T)
 
 struct binTree* bst_min(struct binTree *T)
 {
-  if(bt_is_empty(T))
+  if(bint_is_empty(T))
     return NULL;
   T = T->left;
   while(T->left)
@@ -22,7 +22,7 @@ struct binTree* bst_min(struct binTree *T)
 
 struct binTree* bst_search(struct binTree *T, int x)
 {
-  if(bt_is_empty(T))
+  if(bint_is_empty(T))
     return T;
   if(T->data == NULL)
     return bst_search(T->left, x);
@@ -36,7 +36,7 @@ struct binTree* bst_search(struct binTree *T, int x)
 static struct binTree* _bst_insert_leaf(struct binTree* T, int x)
 {
   if(!T)
-    return bt_create(x);
+    return bint_create(x);
   if(x <= *T->data)
     T->left = _bst_insert_leaf(T->left, x);
   else
@@ -51,9 +51,9 @@ void bst_insert_leaf(struct binTree *T, int x)
 
 static struct binTree* _bst_delete_max(struct binTree *T, int *x)
 {
-  if(bt_is_empty(T))
+  if(bint_is_empty(T))
     return NULL;
-  if(bt_is_empty(T->right))
+  if(bint_is_empty(T->right))
   {
     struct binTree *N = T->left;
     *x = *(T->data);
@@ -67,9 +67,9 @@ static struct binTree* _bst_delete_max(struct binTree *T, int *x)
 
 static struct binTree* _bst_delete_min(struct binTree *T, int *x)
 {
-  if(bt_is_empty(T))
+  if(bint_is_empty(T))
     return NULL;
-  if(bt_is_empty(T->left))
+  if(bint_is_empty(T->left))
   {
     struct binTree *N = T->right;
     *x = *(T->data);
@@ -96,9 +96,9 @@ static struct binTree* _bst_delete_elm(struct binTree *T, int x)
     return T;
   }
   //Node to delete
-  if(bt_is_empty(T->left))
+  if(bint_is_empty(T->left))
   {
-    if(bt_is_empty(T->right))
+    if(bint_is_empty(T->right))
     {
       free(T->data);
       free(T);
@@ -143,7 +143,7 @@ static struct binTree* _bst_insert_root(struct binTree *T, int x, int *l)
   if(!T)
   {
     *l = 0;
-    return bt_create(x);
+    return bint_create(x);
   }
   if(x <= *T->data)
   {
@@ -170,7 +170,7 @@ static struct binTree* _bst_insert_root(struct binTree *T, int x, int *l)
 void bst_insert_root(struct binTree *T, int x)
 {
   if(T->left == NULL)
-    T->left = bt_create(x);
+    T->left = bint_create(x);
   else
   {
     int *l = malloc(sizeof(int));
