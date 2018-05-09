@@ -1,11 +1,4 @@
-#include<stdlib.h>
-#include<stdio.h>
-#include<stdint.h>
-#include<assert.h>
 #include"bst.h"
-#include"bintree.h"
-#include"queue.h"
-#include"list.h"
 
 struct binTree* bst_max(struct binTree *T)
 {

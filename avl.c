@@ -1,5 +1,4 @@
 #include"avl.h"
-#include"queue.h"
 
 struct AVL* avl_init(int n)
 {

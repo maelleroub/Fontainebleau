@@ -1,10 +1,3 @@
-#include<stdlib.h>
-#include<stdio.h>
-#include<stdint.h>
-#include<assert.h>
-#include"queue.h"
-#include"list.h"
-#include"avl.h"
 #include"bintree.h"
 
 struct binTree* bt_init(int n)

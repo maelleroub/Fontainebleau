@@ -1,6 +1,3 @@
-#include<stdlib.h>
-#include<stdio.h>
-#include<assert.h>
 #include"queue.h"
 
 void queue_init(struct queue *queue)

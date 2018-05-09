@@ -1,6 +1,10 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
+#include<stdlib.h>
+#include<stdio.h>
+#include<assert.h>
+
 struct q_list 
 {
   struct q_list *next;

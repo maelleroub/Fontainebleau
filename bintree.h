@@ -2,6 +2,12 @@
 #define BIN_TREE_H_
 
 #include<stdlib.h>
+#include<stdio.h>
+#include<stdint.h>
+#include<assert.h>
+#include"queue.h"
+#include"list.h"
+#include"avl.h"
 #include"avl.h"
 
 struct binTree
