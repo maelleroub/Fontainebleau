@@ -82,6 +82,13 @@ void list_delete(struct list *list)
   }
 }
 
+void* list_get(struct list *l, size_t n)
+{
+  for(size_t i = 0; i < n + 1 && l; i++)
+    l = l->next;
+  return l->data;
+}
+
 struct list* list_copy(struct list *list)
 {
   struct list *l = list_create(NULL);

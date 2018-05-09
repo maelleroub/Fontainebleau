@@ -30,4 +30,6 @@ void list_delete(struct list *list);
 
 struct list* list_copy(struct list *list);
 
+void* list_get(struct list *list, size_t n);
+
 #endif
