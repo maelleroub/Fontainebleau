@@ -14,6 +14,13 @@ int vector_is_empty(struct vector *v)
   return !v->size;
 }
 
+void* vector_get(struct vector *v, size_t a)
+{
+  if(a >= v->size)
+    return NULL;
+  return v->data[a];
+}
+
 int vector_insert_at(struct vector *v, size_t a, void *x)
 {
   if(v->size >= v->capacity || a > v->size)

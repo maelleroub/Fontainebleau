@@ -15,6 +15,8 @@ struct vector* vector_create(size_t c);
 
 int vector_is_empty(struct vector *v);
 
+void* vector_get(struct vector *v, size_t a);
+
 int vector_insert_at(struct vector *v, size_t a, void *x);
 
 int vector_insert_int_at(struct vector *v, size_t a, int x);
