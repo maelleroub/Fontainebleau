@@ -14,23 +14,32 @@ int vector_is_empty(struct vector *v)
   return !v->size;
 }
 
-void vector_insert_at(struct vector *v, size_t a, void *x)
+int vector_insert_at(struct vector *v, size_t a, void *x)
 {
   if(v->size >= v->capacity || a > v->size)
-    return;
+    return 0;
   for(size_t j = v->size; j > a; j--)
     v->data[j] = v->data[j - 1];
   v->data[a] = x;
   v->size++;
+  return 1;
 }
 
-void vector_delete_at(struct vector *v, size_t a)
+int vector_insert_int_at(struct vector *v, size_t a, int x)
+{
+  int *y = malloc(sizeof(int));
+  *y = x;
+  return vector_insert_at(v, a, y);
+}
+
+int vector_delete_at(struct vector *v, size_t a)
 {
   if(a >= v->size)
-    return;
+    return 0;
   for(size_t j = a; j < v->size - 1; j++)
     v->data[j] = v->data[j + 1];
   v->size--;
+  return 1;
 }
 
 void vector_print_int(struct vector *v)
@@ -45,25 +54,15 @@ void vector_print_int(struct vector *v)
 int main()
 {
   struct vector *v = vector_create(5);
-  int* a = malloc(sizeof(int));
-  *a = 3;
-  int* b = malloc(sizeof(int));
-  *b = 1;
-  int* c = malloc(sizeof(int));
-  *c = 4;
-  int* d = malloc(sizeof(int));
-  *d = 2;
-  int* e = malloc(sizeof(int));
-  *e = 7;
-  vector_insert_at(v, 0, a);
+  vector_insert_int_at(v, 0, 3);
   vector_print_int(v);
-  vector_insert_at(v, 1, b);
+  vector_insert_int_at(v, 1, 4);
   vector_print_int(v);
-  vector_insert_at(v, 0, c);
+  vector_insert_int_at(v, 0, 2);
   vector_print_int(v);
-  vector_insert_at(v, 0, d);
+  vector_insert_int_at(v, 0, 7);
   vector_print_int(v);
-  vector_insert_at(v, 2, e);
+  vector_insert_int_at(v, 2, 8);
   vector_print_int(v);
   vector_delete_at(v, 4);
   vector_print_int(v);
