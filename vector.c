@@ -36,6 +36,7 @@ int vector_delete_at(struct vector *v, size_t a)
 {
   if(a >= v->size)
     return 0;
+  free(v->data[a]);
   for(size_t j = a; j < v->size - 1; j++)
     v->data[j] = v->data[j + 1];
   v->size--;
@@ -49,6 +50,14 @@ void vector_print_int(struct vector *v)
   for(size_t i = 0; i < v->size - 1; i++)
     printf("%d -> ", *(int*)v->data[i]);
   printf("%d\n", *(int*)v->data[v->size - 1]);
+}
+
+void vector_delete(struct vector *v)
+{
+  for(size_t i = 0; i < v->size; i++)
+    free(v->data[i]);
+  free(v->data);
+  free(v);
 }
 
 int main()
@@ -70,15 +79,6 @@ int main()
   vector_print_int(v);
   vector_delete_at(v, 0);
   vector_print_int(v);
-  vector_delete_at(v, 0);
-  vector_print_int(v);
-  vector_delete_at(v, 0);
-  vector_print_int(v);
-  vector_delete_at(v, 0);
-  vector_print_int(v);
-  vector_delete_at(v, 0);
-  vector_print_int(v);
-  vector_delete_at(v, 0);
-  vector_print_int(v);
+  vector_delete(v);
   return 1;
 }

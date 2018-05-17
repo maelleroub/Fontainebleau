@@ -23,4 +23,6 @@ int vector_delete_at(struct vector *v, size_t a);
 
 void vector_print_int(struct vector *v);
 
+void vector_delete(struct vector *v);
+
 #endif
