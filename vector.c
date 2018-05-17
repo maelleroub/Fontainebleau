@@ -66,26 +66,3 @@ void vector_delete(struct vector *v)
   free(v->data);
   free(v);
 }
-
-int main()
-{
-  struct vector *v = vector_create(5);
-  vector_insert_int_at(v, 0, 3);
-  vector_print_int(v);
-  vector_insert_int_at(v, 1, 4);
-  vector_print_int(v);
-  vector_insert_int_at(v, 0, 2);
-  vector_print_int(v);
-  vector_insert_int_at(v, 0, 7);
-  vector_print_int(v);
-  vector_insert_int_at(v, 2, 8);
-  vector_print_int(v);
-  vector_delete_at(v, 4);
-  vector_print_int(v);
-  vector_delete_at(v, 0);
-  vector_print_int(v);
-  vector_delete_at(v, 0);
-  vector_print_int(v);
-  vector_delete(v);
-  return 1;
-}

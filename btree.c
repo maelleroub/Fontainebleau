@@ -1,28 +1,28 @@
 #include"btree.h"
 
-struct BTree* bt_create(int degree, struct list *keys)
+struct BTree* bt_create(int degree, struct vector *keys)
 {
   struct BTree *B = malloc(sizeof(struct BTree));
   B->degree = degree;
   B->keys = keys;
-  struct list *c = malloc(sizeof(struct list));
-  c->next = NULL;
-  B->children = c;
+  B->children = vector_create(degree * 2);
   return B;
 }
 
-struct BTree* bt_init(int degree, struct list *keys)
+struct BTree* bt_init(int degree, struct vector *keys)
 {
   struct BTree *B = malloc(sizeof(struct BTree));
   B->degree = degree;
   B->keys = NULL;
-  B->children = list_init(bt_create(degree, keys));
+  struct vector *c = vector_create(degree * 2);
+  vector_insert_at(c, 0, bt_create(degree, keys));
+  B->children = c;
   return B;
 }
 
 void bt_breadth_first_print(struct BTree *T)
 {
-  T = list_get(T->children, 0);
+  T = vector_get(T->children, 0);
   void *change = malloc(sizeof(void));
   struct queue *q = malloc(sizeof(struct queue));
   queue_init(q);
@@ -40,16 +40,15 @@ void bt_breadth_first_print(struct BTree *T)
     else
     {
       struct BTree *B = v;
-      size_t n = list_len(B->keys);
-      printf("%d", *(int*)(list_get(B->keys, 0)));
-      for(size_t i = 1; i < n; i++)
-        printf("/%d", *(int*)(list_get(B->keys, i)));
+      printf("%d", *(int*)(vector_get(B->keys, 0)));
+      for(size_t i = 1; i < B->keys->size; i++)
+        printf("/%d", *(int*)(vector_get(B->keys, i)));
       printf("  ");
-      if(!list_is_empty(B->children))
+      if(!vector_is_empty(B->children))
       {
-        for(size_t j = 0; j < n + 1; j++)
+        for(size_t j = 0; j < B->children->size; j++)
         {
-          queue_push(q, list_get(B->children, j));
+          queue_push(q, vector_get(B->children, j));
         }
       }
     }
