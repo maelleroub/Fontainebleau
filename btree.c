@@ -20,6 +20,16 @@ struct BTree* bt_init(int degree, struct vector *keys)
   return B;
 }
 
+int bt_is_empty(struct BTree *T)
+{
+  return !T || (!T->keys && !vector_get(T->children, 0));
+}
+
+static struct BTree* child(struct BTree *T, size_t i)
+{
+  return vector_get(T->children, i);
+}
+
 void bt_breadth_first_print(struct BTree *T)
 {
   T = vector_get(T->children, 0);
@@ -48,11 +58,30 @@ void bt_breadth_first_print(struct BTree *T)
       {
         for(size_t j = 0; j < B->children->size; j++)
         {
-          queue_push(q, vector_get(B->children, j));
+          queue_push(q, child(B, j));
         }
       }
     }
   }
   free(change);
   queue_delete(q);
+}
+
+int bt_size(struct BTree *T)
+{
+  if(!T->keys)
+    return vector_is_empty(T->children) ? 0 : bt_size(child(T,0));
+  size_t s = 1;
+  for(size_t i = 0; i < T->children->size; i++)
+    s += bt_size(child(T, i));
+  return s;
+}
+
+int bt_height(struct BTree *T) //B-Tree: all children on same level
+{
+  if(!T)
+    return -1;
+  if(!T->keys)
+    return bt_height(child(T, 0));
+  return 1 + bt_height(child(T, 0));
 }

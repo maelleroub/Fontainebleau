@@ -28,5 +28,7 @@ int main()
   vector_insert_at(r->children, 2, c);
   
   bt_breadth_first_print(root);
+  printf("Size: %d\n", bt_size(root));
+  printf("Height: %d\n", bt_height(root));
   return 0;
 }
