@@ -19,11 +19,11 @@ struct AVL* avl_create(int n);
 
 int avl_is_empty(struct AVL *A);
 
-size_t avl_size(struct AVL *A);
+int avl_size(struct AVL *A);
 
-size_t avl_height(struct AVL *A);
+int avl_height(struct AVL *A);
 
-size_t avl_width(struct AVL *A);
+int avl_width(struct AVL *A);
 
 struct AVL* avl_max(struct AVL *A);
 

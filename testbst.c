@@ -35,7 +35,7 @@ void bst_test(struct binTree *T)
   bint_breadth_first_print(T);
   printf("max: %d\n", *bst_max(T)->data);
   printf("min: %d\n", *bst_min(T)->data);
-  printf("size: %zu\nheight: %zu\nwidth: %zu\n", bint_size(T), bint_height(T), bint_width(T));
+  printf("size: %d\nheight: %d\nwidth: %d\n", bint_size(T), bint_height(T), bint_width(T));
   printf((bint_is_degenerate(T)) ? "degenerate\n" : "not degenerate\n");
   printf((bint_is_perfect(T)) ? "perfect\n" : "not perfect\n");
   struct binTree *F1 = bst_search(T, 1);

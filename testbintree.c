@@ -23,7 +23,7 @@ void test(struct binTree *T)
   printf("\n----------------\n");
   bint_ugly_print(T);
   bint_breadth_first_print(T);
-  printf("size: %zu\nheight: %zu\nwidth: %zu\n", bint_size(T), bint_height(T), bint_width(T));
+  printf("size: %d\nheight: %d\nwidth: %d\n", bint_size(T), bint_height(T), bint_width(T));
   printf((bint_is_degenerate(T)) ? "degenerate\n" : "not degenerate\n");
   printf((bint_is_perfect(T)) ? "perfect\n" : "not perfect\n");
   printf((bint_is_bst(T)) ? "bst\n" : "not bst\n");

@@ -27,7 +27,7 @@ int avl_is_empty(struct AVL *A)
   return !A || (A->data == NULL && !A->left);
 }
 
-size_t avl_size(struct AVL *A)
+int avl_size(struct AVL *A)
 {
   if(!A)
     return 0;
@@ -45,7 +45,7 @@ static int _max(int a, int b)
   return (a >= b) ? a : b;
 }
 
-size_t avl_height(struct AVL *A)
+int avl_height(struct AVL *A)
 {
   if(avl_is_empty(A))
     return -1;
@@ -54,7 +54,7 @@ size_t avl_height(struct AVL *A)
   return 1 + avl_height((A->balance <= 0) ? A->right : A->left);
 }
 
-size_t avl_width(struct AVL *A)
+int avl_width(struct AVL *A)
 {
   if(avl_is_empty(A))
     return 0;

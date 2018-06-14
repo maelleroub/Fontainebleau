@@ -47,7 +47,7 @@ void avl_test(struct AVL *A)
   avl_breadth_first_print(A);
   printf("max: %d\n", *avl_max(A)->data);
   printf("min: %d\n", *avl_min(A)->data);
-  printf("size: %zu\nheight: %zu\nwidth: %zu\n", avl_size(A), avl_height(A), avl_width(A));
+  printf("size: %d\nheight: %d\nwidth: %d\n", avl_size(A), avl_height(A), avl_width(A));
   struct AVL *F1 = avl_search(A, 1);
   if(F1)
     printf("1 is present in the tree\n");

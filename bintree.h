@@ -23,15 +23,15 @@ struct binTree* bint_create(int n);
 
 int bint_is_empty(struct binTree *T);
 
-size_t bint_size(struct binTree *T);
+int bint_size(struct binTree *T);
 
-size_t bint_height(struct binTree *T);
+int bint_height(struct binTree *T);
 
 int bint_is_degenerate(struct binTree *T);
 
 int bint_is_perfect(struct binTree *T);
 
-size_t bint_width(struct binTree *T);
+int bint_width(struct binTree *T);
 
 int bint_is_bst(struct binTree *T);
 

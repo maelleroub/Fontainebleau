@@ -25,7 +25,7 @@ int bint_is_empty(struct binTree *T)
   return !T || (T->data == NULL && !T->left);
 }
 
-size_t bint_size(struct binTree *T)
+int bint_size(struct binTree *T)
 {
   if(!T)
     return 0;
@@ -43,7 +43,7 @@ static int _max(int a, int b)
   return (a >= b) ? a : b;
 }
 
-size_t bint_height(struct binTree *T)
+int bint_height(struct binTree *T)
 {
   if(bint_is_empty(T))
     return -1;
@@ -87,7 +87,7 @@ int bint_is_perfect(struct binTree *T)
   return _bint_is_perfect(T, h, 1);
 }
 
-size_t bint_width(struct binTree *T)
+int bint_width(struct binTree *T)
 {
   if(bint_is_empty(T))
     return 0;
