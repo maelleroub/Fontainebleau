@@ -85,3 +85,17 @@ int bt_height(struct BTree *T) //B-Tree: all children on same level
     return bt_height(child(T, 0));
   return 1 + bt_height(child(T, 0));
 }
+
+int bt_width(struct BTree *T) //Width of last level: Level n+1 larger than level n
+{
+  if(!T->keys)
+    return vector_is_empty(T->children) ? 0 : bt_width(child(T, 0));
+  if(T->children->size)
+  {
+    int s = 0;
+    for(size_t i = 0; i < T->children->size; i++)
+      s += bt_width(child(T, i));
+    return s;
+  }
+  return 1;
+}

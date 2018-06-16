@@ -6,6 +6,11 @@ int main()
   vector_insert_int_at(rootkeys, 0, 1); 
   vector_insert_int_at(rootkeys, 1, 3); 
   struct BTree *root = bt_init(2, rootkeys);
+  
+  bt_breadth_first_print(root);
+  printf("Size: %d\n", bt_size(root));
+  printf("Height: %d\n", bt_height(root));
+  printf("Width: %d\n", bt_width(root));
 
   struct vector *keysa = vector_create(2);
   vector_insert_int_at(keysa, 0, 0); 
@@ -30,5 +35,6 @@ int main()
   bt_breadth_first_print(root);
   printf("Size: %d\n", bt_size(root));
   printf("Height: %d\n", bt_height(root));
+  printf("Width: %d\n", bt_width(root));
   return 0;
 }

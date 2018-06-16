@@ -25,4 +25,6 @@ int bt_size(struct BTree *T);
 
 int bt_height(struct BTree *T);
 
+int bt_width(struct BTree *T);
+
 #endif
