@@ -99,3 +99,79 @@ int bt_width(struct BTree *T) //Width of last level: Level n+1 larger than level
   }
   return 1;
 }
+
+static struct BTree* _bt_half(struct BTree *T, int first)
+  //Generates a btree from half of the btree given as argument
+{
+  if(first)
+  {
+    struct vector *keys = vector_create(T->degree * 2 - 1);
+    struct BTree *R = bt_create(T->degree, keys);
+    for(int i = 0; i < T->degree; i++)
+    {
+      vector_insert_at(R->keys, i, T->keys->data[i]);
+      vector_insert_at(R->children, i, T->children->data[i]);
+    }
+    vector_insert_at(R->children, T->degree, T->children->data[T->degree]);
+    return R;
+  }
+  struct vector *keys = vector_create(T->degree * 2 - 1);
+  struct BTree *R = bt_create(T->degree, keys);
+  for(int i = T->degree + 2; i < T->degree * 2 - 1; i++)
+  {
+    vector_insert_at(R->keys, i - T->degree * 2, T->keys->data[i]);
+    vector_insert_at(R->children, i - T->degree * 2, T->children->data[i]);
+  }
+  vector_insert_at(R->children, T->degree, T->children->data[T->degree * 2]);
+  return R;
+}
+
+static struct BTree* _bt_insert_downwards(struct BTree *T, int x)
+{
+  if((int)T->keys->size == T->degree * 2 - 1) //Full node
+  {
+    struct BTree *L = _bt_half(T, 1);
+    struct BTree *R = _bt_half(T, 0);
+    struct vector *keys = vector_create(T->degree * 2 - 1);
+    struct BTree *parent = bt_create(T->degree, keys);
+    vector_insert_at(parent->children, 0, L);
+    vector_insert_at(parent->children, 1, R);
+    if(x <= *(int *)parent->keys->data[0])
+      parent->children->data[0] = _bt_insert_downwards(parent->children->data[0], x);
+    else
+      parent->children->data[1] = _bt_insert_downwards(parent->children->data[1], x);
+    return parent;
+  }
+  if(T->children->size)
+  {
+    for(size_t i = 0; i < T->keys->size; i++)
+    {
+      if(x <= *(int *)T->keys->data[i])
+      {
+        T->children->data[i] = _bt_insert_downwards(T->children->data[i], x);
+        return T;
+      }
+    }
+    T->children->data[T->keys->size] = _bt_insert_downwards(T->children->data[T->keys->size], x);
+    return T;
+  }
+  for(size_t i = 0; i < T->keys->size; i++)
+  {
+    if(x <= *(int *)T->keys->data[i])
+    {
+      int *a = malloc(sizeof(int));
+      *a = x;
+      vector_insert_at(T->keys, i, a);
+      return T;
+    }
+  }
+  int *a = malloc(sizeof(int));
+  *a = x;
+  vector_insert_at(T->keys, T->keys->size, a);
+  return T;
+}
+
+void bt_insert_downwards(struct BTree *T, int x)
+{
+  T->children->data[0] = _bt_insert_downwards(T->children->data[0], x);
+}

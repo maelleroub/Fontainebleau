@@ -2,7 +2,15 @@
 
 int main()
 {
-  struct vector *rootkeys = vector_create(2);
+  int *a = malloc(sizeof(int));
+  *a = 7;
+  struct vector *keys = vector_create(3);
+  vector_insert_at(keys, 0, a);
+  struct BTree *T = bt_init(2, keys);
+  bt_insert_downwards(T, 1);
+  bt_breadth_first_print(T);
+
+  /*struct vector *rootkeys = vector_create(2);
   vector_insert_int_at(rootkeys, 0, 1); 
   vector_insert_int_at(rootkeys, 1, 3); 
   struct BTree *root = bt_init(2, rootkeys);
@@ -35,6 +43,6 @@ int main()
   bt_breadth_first_print(root);
   printf("Size: %d\n", bt_size(root));
   printf("Height: %d\n", bt_height(root));
-  printf("Width: %d\n", bt_width(root));
+  printf("Width: %d\n", bt_width(root));*/
   return 0;
 }

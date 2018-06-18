@@ -6,6 +6,10 @@
 #include"queue.h"
 #include"vector.h"
 
+/*
+A BTree's got at least (degree - 1) keys and at most (2 * degree - 1) keys
+*/
+
 struct BTree
 {
   int degree;
@@ -26,5 +30,7 @@ int bt_size(struct BTree *T);
 int bt_height(struct BTree *T);
 
 int bt_width(struct BTree *T);
+
+void bt_insert_downwards(struct BTree *T, int x);
 
 #endif
