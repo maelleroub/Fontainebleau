@@ -149,7 +149,6 @@ static struct BTree* _bt_insert_downwards(struct BTree *T, int x)
   }
   if(T->children->size)
   {
-    printf("%zu\n", T->children->size);
     for(size_t i = 0; i < T->keys->size; i++)
     {
       if(x <= *(int *)T->keys->data[i])
