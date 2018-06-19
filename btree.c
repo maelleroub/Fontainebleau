@@ -107,22 +107,26 @@ static struct BTree* _bt_half(struct BTree *T, int first)
   {
     struct vector *keys = vector_create(T->degree * 2 - 1);
     struct BTree *R = bt_create(T->degree, keys);
-    for(int i = 0; i < T->degree; i++)
+    for(int i = 0; i < T->degree - 1; i++)
     {
       vector_insert_at(R->keys, i, T->keys->data[i]);
-      vector_insert_at(R->children, i, T->children->data[i]);
+      if(T->children->size)
+        vector_insert_at(R->children, i, T->children->data[i]);
     }
-    vector_insert_at(R->children, T->degree, T->children->data[T->degree]);
+    if(T->children->size)
+      vector_insert_at(R->children, T->degree - 1, T->children->data[T->degree - 1]);
     return R;
   }
   struct vector *keys = vector_create(T->degree * 2 - 1);
   struct BTree *R = bt_create(T->degree, keys);
-  for(int i = T->degree + 2; i < T->degree * 2 - 1; i++)
+  for(int i = T->degree; i < T->degree * 2 - 1; i++)
   {
-    vector_insert_at(R->keys, i - T->degree * 2, T->keys->data[i]);
-    vector_insert_at(R->children, i - T->degree * 2, T->children->data[i]);
+    vector_insert_at(R->keys, i - T->degree, T->keys->data[i]);
+    if(T->children->size)
+      vector_insert_at(R->children, i - T->degree, T->children->data[i]);
   }
-  vector_insert_at(R->children, T->degree, T->children->data[T->degree * 2]);
+  if(T->children->size)
+    vector_insert_at(R->children, T->degree - 1, T->children->data[T->degree * 2 - 1]);
   return R;
 }
 
@@ -133,6 +137,7 @@ static struct BTree* _bt_insert_downwards(struct BTree *T, int x)
     struct BTree *L = _bt_half(T, 1);
     struct BTree *R = _bt_half(T, 0);
     struct vector *keys = vector_create(T->degree * 2 - 1);
+    vector_insert_at(keys, 0, T->keys->data[T->degree - 1]);
     struct BTree *parent = bt_create(T->degree, keys);
     vector_insert_at(parent->children, 0, L);
     vector_insert_at(parent->children, 1, R);
@@ -144,6 +149,7 @@ static struct BTree* _bt_insert_downwards(struct BTree *T, int x)
   }
   if(T->children->size)
   {
+    printf("%zu\n", T->children->size);
     for(size_t i = 0; i < T->keys->size; i++)
     {
       if(x <= *(int *)T->keys->data[i])

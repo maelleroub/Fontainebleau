@@ -1,14 +1,27 @@
 #include"btree.h"
+#include<assert.h>
+
+void test(struct BTree *T, int x)
+{
+  printf("\n----------------\nInsertion of %d:\n", x);
+  bt_insert_downwards(T, x);
+  bt_breadth_first_print(T);
+}
 
 int main()
 {
-  int *a = malloc(sizeof(int));
-  *a = 7;
   struct vector *keys = vector_create(3);
-  vector_insert_at(keys, 0, a);
+  vector_insert_int_at(keys, 0, 7);
   struct BTree *T = bt_init(2, keys);
-  bt_insert_downwards(T, 1);
-  bt_breadth_first_print(T);
+  test(T, 1);
+  test(T, 8);
+  test(T, 4);
+  test(T, 12);
+  test(T, 3);
+  test(T, 6);
+  test(T, 11);
+  test(T, 9);
+  test(T, 2);
 
   /*struct vector *rootkeys = vector_create(2);
   vector_insert_int_at(rootkeys, 0, 1); 
