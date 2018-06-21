@@ -145,6 +145,11 @@ static struct BTree* _bt_insert_downwards(struct BTree *T, int x)
       parent->children->data[0] = _bt_insert_downwards(parent->children->data[0], x);
     else
       parent->children->data[1] = _bt_insert_downwards(parent->children->data[1], x);
+    free(T->children->data);
+    free(T->children);
+    free(T->keys->data);
+    free(T->keys);
+    free(T);
     return parent;
   }
   if(T->children->size)
@@ -179,4 +184,18 @@ static struct BTree* _bt_insert_downwards(struct BTree *T, int x)
 void bt_insert_downwards(struct BTree *T, int x)
 {
   T->children->data[0] = _bt_insert_downwards(T->children->data[0], x);
+}
+
+void bt_delete(struct BTree *T)
+{
+  for(size_t i = 0; i < T->children->size; i++)
+    bt_delete(child(T, i));
+  if(T->keys)
+    vector_delete(T->keys);
+  if(T->children)
+  {
+    free(T->children->data);
+    free(T->children);
+  }
+  free(T);
 }

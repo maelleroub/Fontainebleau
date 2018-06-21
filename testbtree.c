@@ -22,6 +22,7 @@ int main()
   test(T, 11);
   test(T, 9);
   test(T, 2);
+  bt_delete(T);
 
   /*struct vector *rootkeys = vector_create(2);
   vector_insert_int_at(rootkeys, 0, 1); 

@@ -33,4 +33,6 @@ int bt_width(struct BTree *T);
 
 void bt_insert_downwards(struct BTree *T, int x);
 
+void bt_delete(struct BTree *T);
+
 #endif
