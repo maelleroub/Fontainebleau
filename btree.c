@@ -150,11 +150,11 @@ static void _bt_split(struct BTree *parent, int i) //parent is never full
     parent->children->data[i] = L;
     vector_insert_at(parent->children, i + 1, R);
   }
-  free(c);
   free(c->children->data);
   free(c->children);
   free(c->keys->data);
   free(c->keys);
+  free(c);
 }
 
 static struct BTree* _bt_insert_downwards(struct BTree *T, int x) //T is never full
