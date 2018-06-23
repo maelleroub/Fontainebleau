@@ -150,6 +150,7 @@ static void _bt_split(struct BTree *parent, int i) //parent is never full
     parent->children->data[i] = L;
     vector_insert_at(parent->children, i + 1, R);
   }
+  free(c);
   free(c->children->data);
   free(c->children);
   free(c->keys->data);
@@ -164,7 +165,7 @@ static struct BTree* _bt_insert_downwards(struct BTree *T, int x) //T is never f
     {
       if(x <= *(int *)T->keys->data[i])
       {
-        if(child(T, i)->keys->size == T->degree * 2 - 1)
+        if((int)child(T, i)->keys->size == T->degree * 2 - 1)
         {
           _bt_split(T, i);
           if(x <= *(int *)T->keys->data[i])
@@ -177,7 +178,7 @@ static struct BTree* _bt_insert_downwards(struct BTree *T, int x) //T is never f
         return T;
       }
     }
-    if(child(T, T->keys->size)->keys->size == T->degree * 2 - 1)
+    if((int)child(T, T->keys->size)->keys->size == T->degree * 2 - 1)
     {
       _bt_split(T, T->keys->size);
       if(x <= *(int *)T->keys->data[T->keys->size - 1])
@@ -207,7 +208,7 @@ static struct BTree* _bt_insert_downwards(struct BTree *T, int x) //T is never f
 
 void bt_insert_downwards(struct BTree *T, int x)
 {
-  if(child(T, 0)->keys->size == T->degree * 2 - 1)
+  if((int)child(T, 0)->keys->size == T->degree * 2 - 1)
     _bt_split(T, 0);
   T->children->data[0] = _bt_insert_downwards(T->children->data[0], x);
 }
