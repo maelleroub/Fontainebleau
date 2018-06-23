@@ -455,5 +455,6 @@ struct AVL* bint_to_avl(struct binTree *T)
   A->left->right = _bint_to_avl(T->left->right, h);
   int hr = *h;
   A->left->balance = hl - hr;
+  free(h);
   return A;
 }

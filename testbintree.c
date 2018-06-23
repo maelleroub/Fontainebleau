@@ -18,6 +18,14 @@ void avl_test(struct binTree *T)
   printf((bint_is_avl(T)) ? "avl\n" : "not avl\n");
 }
 
+void balance_print(struct binTree *T)
+{
+  printf("\n----------------\nBalances:\n");
+  struct AVL *A = bint_to_avl(T);
+  avl_balance_print(A);
+  avl_delete(A);
+}
+
 void test(struct binTree *T)
 {
   printf("\n----------------\n");
@@ -55,6 +63,7 @@ int main()
   A->right->right = bint_create(7);
   avl_test(A_sent);
   test(A_sent);
+  balance_print(A_sent);
   bint_delete(A_sent);
 
   struct binTree *B_sent =  bint_init(4);
@@ -67,6 +76,7 @@ int main()
   B->right->left->left = bint_create(5);
   avl_test(B_sent);
   test(B_sent);
+  balance_print(B_sent);
   bint_delete(B_sent);
 
   struct binTree *C_sent = bint_init(10);
@@ -88,6 +98,7 @@ int main()
   avl_test(C_sent);
   C->left->right->right = bint_create(9);
   test(C_sent);
+  balance_print(C_sent);
   bint_delete(C_sent);
 
   return 1;

@@ -187,6 +187,28 @@ void avl_breadth_first_print(struct AVL *A)
   }
 }
 
+static void _avl_balance_print(struct AVL *A, int depth)
+{
+  if(!avl_is_empty(A))
+  {
+    _avl_balance_print(A->left, depth + 1);
+    for(int i = 0; i < depth; i++)
+      printf("  ");
+    printf("%d\n", A->balance);
+    _avl_balance_print(A->right, depth + 1);
+  }
+  else
+    printf("\n");
+}
+
+void avl_balance_print(struct AVL *A)
+{
+  if(avl_is_empty(A))
+    return;
+  _avl_balance_print(A->left, 0);
+}
+
+
 static struct AVL* _rotation_left(struct AVL *A)
 {
   struct AVL *R = A->right;

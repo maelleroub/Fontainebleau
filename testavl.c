@@ -3,27 +3,6 @@
 #include"bintree.h"
 #include"avl.h"
 
-static void _balance(struct AVL *A, int depth)
-{
-  if(!avl_is_empty(A))
-  {
-    _balance(A->left, depth + 1);
-    for(int i = 0; i < depth; i++)
-      printf("  ");
-    printf("%d\n", A->balance);
-    _balance(A->right, depth + 1);
-  }
-  else
-    printf("\n");
-}
-
-void balance(struct AVL *A)
-{
-  if(avl_is_empty(A))
-    return;
-  _balance(A->left, 0);
-}
-
 void test_deletion(struct AVL *A, int x)
 {
   printf("\n----------------\n");
@@ -85,6 +64,6 @@ int main()
   test_insertion(A, 84);
   test_insertion(A, 37);
   test_deletion(A, 49);
-  balance(A);
+  avl_balance_print(A);
   avl_delete(A);
 }
