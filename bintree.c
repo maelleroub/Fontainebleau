@@ -231,7 +231,7 @@ struct list* bint_to_hierarchy(struct binTree *T)
   {
     T = T->left;
     int nextlevel = 0;
-    void *change = malloc(sizeof(void));
+    void *change = malloc(sizeof(1));
     struct queue *q = malloc(sizeof(struct queue));
     queue_init(q);
     queue_push(q, T);

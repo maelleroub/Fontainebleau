@@ -33,7 +33,7 @@ static struct BTree* child(struct BTree *T, size_t i)
 void bt_breadth_first_print(struct BTree *T)
 {
   T = vector_get(T->children, 0);
-  void *change = malloc(sizeof(void));
+  void *change = malloc(sizeof(1));
   struct queue *q = malloc(sizeof(struct queue));
   queue_init(q);
   queue_push(q, T);
